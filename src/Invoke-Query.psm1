@@ -1,6 +1,6 @@
 using namespace System.Data
 using module ./Invoke-Reader.psm1
-using module ./Mapping/ConvertFrom-DataReader.psm1
+using module ./Mapping/ConvertFrom-Reader.psm1
 
 <#
 .SYNOPSIS
@@ -37,5 +37,5 @@ function Invoke-Query {
 	)
 
 	$reader = Invoke-Reader $Connection -Command $Command -Parameters $Parameters -AsHashtable:$AsHashtable
-	ConvertFrom-DataReader $reader
+	ConvertFrom-Reader $reader
 }

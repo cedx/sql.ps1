@@ -14,7 +14,7 @@ using namespace System.Data
 .OUTPUTS
 	[psobject] The custom object corresponding to the specified data record.
 #>
-function ConvertFrom-DataRecord {
+function ConvertFrom-Record {
 	[OutputType([ordered], [psobject])]
 	param (
 		[Parameter(Mandatory, Position = 0, ValueFromPipeline)]

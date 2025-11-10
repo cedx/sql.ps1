@@ -1,6 +1,6 @@
 using namespace System.Collections.Generic
 using namespace System.Data
-using module ./ConvertFrom-DataRecord.psm1
+using module ./ConvertFrom-Record.psm1
 
 <#
 .SYNOPSIS
@@ -16,7 +16,7 @@ using module ./ConvertFrom-DataRecord.psm1
 .OUTPUTS
 	[psobject[]] The array of custom objects corresponding to the specified data reader.
 #>
-function ConvertFrom-DataReader {
+function ConvertFrom-Reader {
 	[OutputType([ordered[]], [psobject[]])]
 	param (
 		[Parameter(Mandatory, Position = 0, ValueFromPipeline)]
@@ -28,7 +28,7 @@ function ConvertFrom-DataReader {
 
 	process {
 		$list = [List[object]]::new()
-		while ($InputObject.Read()) { $list.Add((ConvertFrom-DataRecord $InputObject -AsHashtable:$AsHashtable)) }
+		while ($InputObject.Read()) { $list.Add((ConvertFrom-Record $InputObject -AsHashtable:$AsHashtable)) }
 		$InputObject.Close()
 		$list.ToArray()
 	}

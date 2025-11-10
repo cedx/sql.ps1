@@ -10,7 +10,7 @@ using module ./New-Command.psm1
 .PARAMETER Parameters
 	The parameters of the SQL query.
 .OUTPUTS
-	The value of the first column of the first row returned.
+	The value of the first column of the first row returned, or `$null` if not found.
 #>
 function Get-Scalar {
 	[CmdletBinding()]
@@ -31,5 +31,5 @@ function Get-Scalar {
 	$dbCommand = New-Command $Connection -Command $Command -Parameters $Parameters
 	$value = $dbCommand.ExecuteScalar()
 	$dbCommand.Dispose()
-	$value -eq [DBNull]::Value ? $null : $value
+	$value -is [DBNull] ? $null : $value
 }

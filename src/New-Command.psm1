@@ -1,4 +1,5 @@
 using namespace System.Diagnostics.CodeAnalysis
+using module ./New-Parameter.psm1
 
 <#
 .SYNOPSIS
@@ -32,13 +33,7 @@ function New-Command {
 	$dbCommand.CommandText = $Command
 
 	foreach ($key in $Parameters.Keys) {
-		$dbParameter = $dbCommand.CreateParameter()
-		$dbParameter.ParameterName = "@$key"
-
-		$value = $Parameters.$key
-		$dbParameter.IsNullable = $null -eq $value
-		$dbParameter.Value = $null -eq $value ? [DBNull]::Value : $value
-
+		$dbParameter = New-Parameter $dbCommand -Name "@$key" -Value $Parameters.$key
 		$dbCommand.Parameters.Add($dbParameter) | Out-Null
 	}
 

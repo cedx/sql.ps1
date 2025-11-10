@@ -1,5 +1,3 @@
-using namespace System.Data
-
 <#
 .SYNOPSIS
 	Converts the specified data record to a custom object or a hash table.
@@ -18,7 +16,7 @@ function ConvertFrom-Record {
 	[OutputType([ordered], [psobject])]
 	param (
 		[Parameter(Mandatory, Position = 0, ValueFromPipeline)]
-		[IDataRecord] $InputObject,
+		[System.Data.IDataRecord] $InputObject,
 
 		[Parameter()]
 		[switch] $AsHashtable

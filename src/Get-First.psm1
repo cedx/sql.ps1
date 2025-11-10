@@ -1,4 +1,3 @@
-using namespace System.Data
 using module ./Invoke-Reader.psm1
 using module ./Mapping/ConvertFrom-Record.psm1
 
@@ -23,7 +22,7 @@ function Get-First {
 	[OutputType([hashtable], [psobject])]
 	param (
 		[Parameter(Mandatory, Position = 0)]
-		[IDbConnection] $Connection,
+		[System.Data.IDbConnection] $Connection,
 
 		[Parameter(Mandatory, Position = 1)]
 		[string] $Command,
@@ -36,7 +35,7 @@ function Get-First {
 		[switch] $AsHashtable
 	)
 
-	$reader = Invoke-Reader $Connection -Command $Command -Parameters $Parameters -AsHashtable:$AsHashtable
+	$reader = Invoke-Reader $Connection -Command $Command -Parameters $Parameters
 	$record = $reader.Read() ? (ConvertFrom-Record $reader -AsHashtable:$AsHashtable) : $null
 	$reader.Close()
 

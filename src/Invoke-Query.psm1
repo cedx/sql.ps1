@@ -1,4 +1,3 @@
-using namespace System.Data
 using module ./Invoke-Reader.psm1
 using module ./Mapping/ConvertFrom-Reader.psm1
 
@@ -23,7 +22,7 @@ function Invoke-Query {
 	[OutputType([hashtable[]], [psobject[]])]
 	param (
 		[Parameter(Mandatory, Position = 0)]
-		[IDbConnection] $Connection,
+		[System.Data.IDbConnection] $Connection,
 
 		[Parameter(Mandatory, Position = 1)]
 		[string] $Command,
@@ -36,6 +35,6 @@ function Invoke-Query {
 		[switch] $AsHashtable
 	)
 
-	$reader = Invoke-Reader $Connection -Command $Command -Parameters $Parameters -AsHashtable:$AsHashtable
-	ConvertFrom-Reader $reader
+	$reader = Invoke-Reader $Connection -Command $Command -Parameters $Parameters
+	ConvertFrom-Reader $reader -AsHashtable:$AsHashtable
 }

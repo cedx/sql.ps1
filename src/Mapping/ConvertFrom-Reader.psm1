@@ -1,5 +1,4 @@
 using namespace System.Collections.Generic
-using namespace System.Data
 using module ./ConvertFrom-Record.psm1
 
 <#
@@ -20,7 +19,7 @@ function ConvertFrom-Reader {
 	[OutputType([ordered[]], [psobject[]])]
 	param (
 		[Parameter(Mandatory, Position = 0, ValueFromPipeline)]
-		[IDataReader] $InputObject,
+		[System.Data.IDataReader] $InputObject,
 
 		[Parameter()]
 		[switch] $AsHashtable

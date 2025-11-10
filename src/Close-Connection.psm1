@@ -1,5 +1,3 @@
-using namespace System.Data
-
 <#
 .SYNOPSIS
 	Closes the specified database connection.
@@ -13,7 +11,7 @@ function Close-Connection {
 	[OutputType([void])]
 	param (
 		[Parameter(Mandatory, Position = 0, ValueFromPipeline)]
-		[IDbConnection] $Connection
+		[System.Data.IDbConnection] $Connection
 	)
 
 	process {

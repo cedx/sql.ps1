@@ -1,4 +1,3 @@
-using namespace System.Data
 using namespace System.Diagnostics.CodeAnalysis
 
 <#
@@ -15,11 +14,11 @@ using namespace System.Diagnostics.CodeAnalysis
 #>
 function New-Command {
 	[CmdletBinding()]
-	[OutputType([IDbCommand])]
+	[OutputType([System.Data.IDbCommand])]
 	[SuppressMessage("PSUseShouldProcessForStateChangingFunctions", "")]
 	param (
 		[Parameter(Mandatory, Position = 0)]
-		[IDbConnection] $Connection,
+		[System.Data.IDbConnection] $Connection,
 
 		[Parameter(Mandatory, Position = 1)]
 		[string] $Command,

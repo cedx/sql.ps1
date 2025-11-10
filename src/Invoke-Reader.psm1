@@ -1,4 +1,3 @@
-using namespace System.Data
 using module ./New-Command.psm1
 
 <#
@@ -15,10 +14,10 @@ using module ./New-Command.psm1
 #>
 function Invoke-Reader {
 	[CmdletBinding()]
-	[OutputType([IDataReader])]
+	[OutputType([System.Data.IDataReader])]
 	param (
 		[Parameter(Mandatory, Position = 0)]
-		[IDbConnection] $Connection,
+		[System.Data.IDbConnection] $Connection,
 
 		[Parameter(Mandatory, Position = 1)]
 		[string] $Command,
@@ -28,7 +27,7 @@ function Invoke-Reader {
 		[hashtable] $Parameters = @{}
 	)
 
-	if ($Connection.State -eq [ConnectionState]::Closed) { $Connection.Open() }
+	if ($Connection.State -eq [System.Data.ConnectionState]::Closed) { $Connection.Open() }
 	$dbCommand = New-Command $Connection -Command $Command -Parameters $Parameters
 	$reader = $dbCommand.ExecuteReader()
 	$dbCommand.Dispose()

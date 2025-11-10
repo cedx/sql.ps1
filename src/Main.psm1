@@ -1,4 +1,3 @@
-using namespace System.Data
 using module ./Get-Scalar.psm1
 
 <#
@@ -12,7 +11,7 @@ function Get-ServerVersion {
 	[OutputType([version])]
 	param (
 		[Parameter(Mandatory, Position = 0)]
-		[IDbConnection] $Connection
+		[System.Data.IDbConnection] $Connection
 	)
 
 	$command = switch ($Connection.GetType().FullName) {

@@ -29,7 +29,7 @@ function New-Parameter {
 	)
 
 	$parameter = $Command.CreateParameter()
-	$parameter.IsNullable = $null -eq $Value
+	$parameter.IsNullable = ($null -eq $Value) -or ($Value -is [DBNull])
 	$parameter.ParameterName = $Name
 	$parameter.Value = $null -eq $Value ? [DBNull]::Value : $Value
 	$parameter

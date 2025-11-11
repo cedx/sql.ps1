@@ -1,4 +1,4 @@
-using module ./SqlMapper.psm1
+using module ./DataMapper.psm1
 
 <#
 .SYNOPSIS
@@ -23,17 +23,17 @@ function ConvertFrom-Record {
 	)
 
 	process {
-		$hashtable = [ordered]@{}
+		$properties = [ordered]@{}
 		for ($index = 0; $index -lt $InputObject.FieldCount; $index++) {
 			$key = $InputObject.GetName($index)
-			$hashtable.$key = $InputObject.IsDBNull($index) ? $null : $InputObject.GetValue($index)
+			$properties.$key = $InputObject.IsDBNull($index) ? $null : $InputObject.GetValue($index)
 		}
 
 		switch ($As) {
-			([hashtable]) { $hashtable; break }
-			([ordered]) { $hashtable; break }
-			([psobject]) { [pscustomobject] $hashtable; break }
-			default { [SqlMapper]::CreateInstance($As, $hashtable) }
+			([hashtable]) { [hashtable] $properties; break }
+			([ordered]) { $properties; break }
+			([psobject]) { [pscustomobject] $properties; break }
+			default { [DataMapper]::CreateInstance($As, $properties) }
 		}
 	}
 }

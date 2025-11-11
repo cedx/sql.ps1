@@ -31,5 +31,5 @@ function Invoke-Reader {
 	$dbCommand = New-Command $Connection -Command $Command -Parameters $Parameters
 	$reader = $dbCommand.ExecuteReader()
 	$dbCommand.Dispose()
-	[PSCustomObject]@{ Reader = $reader }
+	[pscustomobject]@{ Reader = $reader }
 }

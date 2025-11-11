@@ -10,16 +10,14 @@ using module ./Mapping/ConvertFrom-Record.psm1
 	The SQL query to be executed.
 .PARAMETER Parameters
 	The parameters of the SQL query.
-.PARAMETER AsHashtable
-	Value indicating whether to convert the record to a hash table.
+.PARAMETER As
+	The type to which the returned record should be converted.
 .OUTPUTS
-	[hashtable] The single row as a hash table. If not found: throws an error if `-ErrorAction` is set to `Stop`, otherwise returns `$null`.
-.OUTPUTS
-	[psobject] The single row as a custom object. If not found: throws an error if `-ErrorAction` is set to `Stop`, otherwise returns `$null`.
+	The single record. If not found: throws an error if `-ErrorAction` is set to `Stop`, otherwise returns `$null`.
 #>
 function Get-Single {
 	[CmdletBinding()]
-	[OutputType([hashtable], [psobject])]
+	[OutputType([object])]
 	param (
 		[Parameter(Mandatory, Position = 0)]
 		[System.Data.IDbConnection] $Connection,
@@ -31,8 +29,8 @@ function Get-Single {
 		[ValidateNotNull()]
 		[hashtable] $Parameters = @{},
 
-		[Parameter()]
-		[switch] $AsHashtable
+		[ValidateNotNull()]
+		[type] $As = ([psobject])
 	)
 
 	$reader = (Invoke-Reader $Connection -Command $Command -Parameters $Parameters).Reader
@@ -40,7 +38,7 @@ function Get-Single {
 	$rowCount = 0
 	while ($reader.Read()) {
 		if (++$rowCount -gt 1) { break }
-		$record = ConvertFrom-Record $reader -AsHashtable:$AsHashtable
+		$record = ConvertFrom-Record $reader -As:$As
 	}
 
 	$reader.Close()

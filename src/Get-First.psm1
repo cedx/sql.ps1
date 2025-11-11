@@ -10,16 +10,14 @@ using module ./Mapping/ConvertFrom-Record.psm1
 	The SQL query to be executed.
 .PARAMETER Parameters
 	The parameters of the SQL query.
-.PARAMETER AsHashtable
-	Value indicating whether to convert the record to a hash table.
+.PARAMETER As
+	The type to which the returned record should be converted.
 .OUTPUTS
-	[hashtable] The first row as a hash table. If not found: throws an error if `-ErrorAction` is set to `Stop`, otherwise returns `$null`.
-.OUTPUTS
-	[psobject] The first row as a custom object. If not found: throws an error if `-ErrorAction` is set to `Stop`, otherwise returns `$null`.
+	The first record. If not found: throws an error if `-ErrorAction` is set to `Stop`, otherwise returns `$null`.
 #>
 function Get-First {
 	[CmdletBinding()]
-	[OutputType([hashtable], [psobject])]
+	[OutputType([object])]
 	param (
 		[Parameter(Mandatory, Position = 0)]
 		[System.Data.IDbConnection] $Connection,
@@ -31,12 +29,12 @@ function Get-First {
 		[ValidateNotNull()]
 		[hashtable] $Parameters = @{},
 
-		[Parameter()]
-		[switch] $AsHashtable
+		[ValidateNotNull()]
+		[type] $As = ([psobject])
 	)
 
 	$reader = (Invoke-Reader $Connection -Command $Command -Parameters $Parameters).Reader
-	$record = $reader.Read() ? (ConvertFrom-Record $reader -AsHashtable:$AsHashtable) : $null
+	$record = $reader.Read() ? (ConvertFrom-Record $reader -As:$As) : $null
 	$reader.Close()
 
 	$invalidOperation = $record ? $null : [InvalidOperationException] "Unable to fetch the first row."

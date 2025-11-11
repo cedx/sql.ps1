@@ -10,16 +10,14 @@ using module ./Mapping/ConvertFrom-Reader.psm1
 	The SQL query to be executed.
 .PARAMETER Parameters
 	The parameters of the SQL query.
-.PARAMETER AsHashtable
-	Value indicating whether to convert the records to hash tables.
+.PARAMETER As
+	The type to which the returned records should be converted.
 .OUTPUTS
-	[hashtable[]] The array of hash tables whose keys correspond to the returned columns.
-.OUTPUTS
-	[psobject[]] The array of custom objects whose properties correspond to the returned columns.
+	The array of objects whose properties correspond to the queried columns.
 #>
 function Invoke-Query {
 	[CmdletBinding()]
-	[OutputType([hashtable[]], [psobject[]])]
+	[OutputType([object[]])]
 	param (
 		[Parameter(Mandatory, Position = 0)]
 		[System.Data.IDbConnection] $Connection,
@@ -31,10 +29,10 @@ function Invoke-Query {
 		[ValidateNotNull()]
 		[hashtable] $Parameters = @{},
 
-		[Parameter()]
-		[switch] $AsHashtable
+		[ValidateNotNull()]
+		[type] $As = ([psobject])
 	)
 
 	$reader = (Invoke-Reader $Connection -Command $Command -Parameters $Parameters).Reader
-	ConvertFrom-Reader $reader -AsHashtable:$AsHashtable
+	ConvertFrom-Reader $reader -As:$As
 }

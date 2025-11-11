@@ -26,12 +26,6 @@ function Get-ServerVersion {
 	}
 
 	$version = Get-Scalar $Connection -Command $command
-	if (-not $version) { throw $invalidOperation }
-	if ($version -notmatch "^(\d+(\.\d+)*)[^\.\d]*") { throw $invalidOperation }
+	if ((-not $version) -or ($version -notmatch "^(\d+(\.\d+)*)")) { throw $invalidOperation }
 	[version] $Matches.1
-
-	# TODO !!!!
-	# MariaDB : SELECT VERSION() => 10.11.7-MariaDB
-	# PostgreSQL : SHOW server_version => 16.10 (Ubuntu 16.10-0ubuntu0.24.04.1)
-	# SQL Server : SELECT SERVERPROPERTY('ProductVersion') => 16.0.1150.1
 }

@@ -13,7 +13,8 @@ using module ./Mapping/ConvertFrom-Record.psm1
 .PARAMETER As
 	The type to which the returned record should be converted.
 .OUTPUTS
-	The single record. If not found: throws an error if `-ErrorAction` is set to `Stop`, otherwise returns `$null`.
+	The single record.
+	If not found: throws an error if `-ErrorAction` is set to `Stop`, otherwise returns `$null`.
 #>
 function Get-Single {
 	[CmdletBinding()]

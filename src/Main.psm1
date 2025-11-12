@@ -26,6 +26,6 @@ function Get-Version {
 	}
 
 	$version = Get-Scalar $Connection -Command $command
-	if ((-not $version) -or ($version -notmatch "^(\d+(\.\d+)*)")) { throw $invalidOperation }
-	[version] $Matches.1
+	if ((-not $version) -or ($version -notmatch "^\d+(\.\d+)*")) { throw $invalidOperation }
+	[version] $Matches.0
 }

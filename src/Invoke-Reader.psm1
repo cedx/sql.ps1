@@ -12,7 +12,7 @@ using module ./Mapping/DataMapper.psm1
 .PARAMETER Parameters
 	The parameters of the SQL query.
 .OUTPUTS
-	An adapter with a `Reader` property containing the data reader that can be used to iterate over the results of the SQL query.
+	An object with a `Reader` property containing the data reader that can be used to iterate over the results of the SQL query.
 #>
 function Invoke-Reader {
 	[CmdletBinding()]

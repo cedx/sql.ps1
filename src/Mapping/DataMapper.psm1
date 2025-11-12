@@ -1,4 +1,6 @@
+using namespace System.Collections
 using namespace System.ComponentModel.DataAnnotations.Schema
+using namespace System.Diagnostics.CodeAnalysis
 using namespace System.Reflection
 
 <#
@@ -15,6 +17,49 @@ class DataMapper {
 
 	<#
 	.SYNOPSIS
+		Converts the specified data reader into an array of objects of the specified type.
+	.PARAMETER Reader
+		The data reader to be converted.
+	.PARAMETER Type
+		The type of objects to return.
+	.OUTPUTS
+		The array of objects corresponding to the specified data reader.
+	#>
+	[object[]] ConvertReader([System.Data.IDataReader] $Reader, [type] $Type) {
+		$list = [ArrayList]::new()
+		while ($Reader.Read()) { $list.Add($this.ConvertRecord($Reader, $Type)) }
+		$Reader.Close()
+		return $list.ToArray()
+	}
+
+	<#
+	.SYNOPSIS
+		Converts the specified data record to the specified type.
+	.PARAMETER Record
+		The data record to be converted.
+	.PARAMETER Type
+		The type of object to return.
+	.OUTPUTS
+		The object corresponding to the specified data record.
+	#>
+	[SuppressMessage("PSUseDeclaredVarsMoreThanAssignments", "")]
+	[object] ConvertRecord([System.Data.IDataRecord] $Record, [type] $Type) {
+		$properties = [ordered]@{}
+		for ($index = 0; $index -lt $Record.FieldCount; $index++) {
+			$key = $Record.GetName($index)
+			$properties.$key = $Record.IsDBNull($index) ? $null : $Record.GetValue($index)
+		}
+
+		return $discard = switch ($Type) {
+			([hashtable]) { [hashtable] $properties; break }
+			([ordered]) { $properties; break }
+			([psobject]) { [pscustomobject] $properties; break }
+			default { $this.CreateInstance($Type, $properties) }
+		}
+	}
+
+	<#
+	.SYNOPSIS
 		Creates a new entity of the specified type using that type's parameterless constructor.
 	.PARAMETER Type
 		The entity type.
@@ -23,10 +68,10 @@ class DataMapper {
 	.OUTPUTS
 		The newly created object.
 	#>
-	static [object] CreateInstance([type] $Type, [hashtable] $Properties) {
+	[object] CreateInstance([type] $Type, [hashtable] $Properties) {
 		$culture = [cultureinfo]::InvariantCulture
 		$object = $Type::new()
-		$propertyMap = [DataMapper]::GetPropertyMap($Type)
+		$propertyMap = $this.GetPropertyMap($Type)
 
 		foreach ($key in $Properties.Keys.Where{ $_ -in $propertyMap.Keys }) {
 			$propertyInfo = $propertyMap.$key
@@ -46,7 +91,7 @@ class DataMapper {
 	.OUTPUTS
 		The property map associated with the specified entity type.
 	#>
-	hidden static [hashtable] GetPropertyMap([type] $Type) {
+	[hashtable] GetPropertyMap([type] $Type) {
 		if ($Type -in [DataMapper]::PropertyMaps.Keys) { return [DataMapper]::PropertyMaps.$Type }
 
 		$propertyMap = @{}

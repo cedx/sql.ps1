@@ -75,7 +75,7 @@ class DataMapper {
 
 		foreach ($key in $Properties.Keys.Where{ $_ -in $propertyMap.Keys }) {
 			$propertyInfo = $propertyMap.$key
-			if ($propertyInfo.CanWrite -and (-not [Attribute]::IsDefined[NotMappedAttribute]($propertyInfo, $false))) {
+			if ($propertyInfo.CanWrite -and (-not [Attribute]::IsDefined($propertyInfo, ([NotMappedAttribute])))) {
 				$object.$($propertyInfo.Name) = [Convert]::ChangeType($Properties.$key, $propertyInfo.PropertyType, $culture)
 			}
 		}
@@ -97,7 +97,7 @@ class DataMapper {
 		$propertyMap = @{}
 		$propertyInfos = $Type.GetProperties([BindingFlags]::Instance -bor [BindingFlags]::Public)
 		foreach ($propertyInfo in $propertyInfos) {
-			$column = [Attribute]::GetCustomAttribute[ColumnAttribute]($propertyInfo, $false)
+			$column = [Attribute]::GetCustomAttribute($propertyInfo, ([ColumnAttribute]))
 			$key = $column ? $column.Name : $propertyInfo.Name
 			$propertyMap.$key = $propertyInfo
 		}

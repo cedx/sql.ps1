@@ -1,4 +1,9 @@
 # Changelog
 
+## Version [0.2.0](https://github.com/cedx/sql.ps1/compare/v0.1.0...v0.2.0)
+- Added a simple object mapping feature.
+- Added new cmdlets: `Get-ServerVersion`, `New-Command` and `New-Parameter`.
+- Replaced the `-AsHastable` parameter of `Get-First`, `Get-Single` and `Invoke-Query` cmdlets by the `-As` parameter.
+
 ## Version 0.1.0
 - Initial release.

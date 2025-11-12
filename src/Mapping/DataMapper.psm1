@@ -96,8 +96,7 @@ class DataMapper {
 		$propertyInfos = $Type.GetProperties([BindingFlags]::Instance -bor [BindingFlags]::Public)
 		foreach ($propertyInfo in $propertyInfos.Where{ $_.CanWrite -and (-not [Attribute]::IsDefined($_, ([NotMappedAttribute])))}) {
 			$column = [Attribute]::GetCustomAttribute($propertyInfo, ([ColumnAttribute]))
-			$key = $column ? $column.Name : $propertyInfo.Name
-			$propertyMap.$key = $propertyInfo
+			$propertyMap.$($column ? $column.Name : $propertyInfo.Name) = $propertyInfo
 		}
 
 		return [DataMapper]::PropertyMaps.$Type = $propertyMap

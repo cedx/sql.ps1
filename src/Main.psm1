@@ -14,7 +14,7 @@ function Get-Version {
 		[System.Data.IDbConnection] $Connection
 	)
 
-	$invalidOperation = [InvalidOperationException] "The server version cannot be determined."
+	$invalidOperation = [InvalidOperationException] "The server version could not be determined."
 	$command = switch ($Connection.GetType().FullName) {
 		"Microsoft.Data.SqlClient.SqlConnection" { "SELECT SERVERPROPERTY('ProductVersion')"; break }
 		"Microsoft.Data.Sqlite.SqlConnection" { "SELECT sqlite_version()"; break }

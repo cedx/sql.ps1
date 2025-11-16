@@ -1,4 +1,4 @@
-using namespace System.Collections
+using namespace System.Collections.Generic
 using namespace System.ComponentModel.DataAnnotations.Schema
 using namespace System.Diagnostics.CodeAnalysis
 using namespace System.Reflection
@@ -26,7 +26,7 @@ class DataMapper {
 		The array of objects corresponding to the specified data reader.
 	#>
 	[object[]] ConvertReader([System.Data.IDataReader] $Reader, [type] $Type) {
-		$list = [ArrayList]::new()
+		$list = [List[object]]::new()
 		while ($Reader.Read()) { $list.Add($this.ConvertRecord($Reader, $Type)) }
 		$Reader.Close()
 		return $list.ToArray()

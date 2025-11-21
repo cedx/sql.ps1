@@ -1,5 +1,8 @@
 # Changelog
 
+## Version [0.5.1](https://github.com/cedx/sql.ps1/compare/v0.5.0...v0.5.1)
+- Fixed the `New-Command` cmdlet.
+
 ## Version [0.5.0](https://github.com/cedx/sql.ps1/compare/v0.4.0...v0.5.0)
 - Added the `-PositionalParameters` argument to most cmdlets.
 - Restored the type of the `-Parameters` argument to `[hashtable]`.

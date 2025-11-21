@@ -1,6 +1,6 @@
 ﻿@{
 	DefaultCommandPrefix = "Sql"
-	ModuleVersion = "0.5.0"
+	ModuleVersion = "0.5.1"
 	PowerShellVersion = "7.4"
 	RootModule = "src/Main.psm1"
 

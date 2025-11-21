@@ -1,7 +1,7 @@
 # Changelog
 
 ## Version [0.5.0](https://github.com/cedx/sql.ps1/compare/v0.4.0...v0.5.0)
-- Added the `-PositionalParameters` parameter to most cmdlets.
+- Added the `-PositionalParameters` argument to most cmdlets.
 - Restored the type of the `-Parameters` argument to `[hashtable]`.
 
 ## Version [0.4.0](https://github.com/cedx/sql.ps1/compare/v0.3.0...v0.4.0)

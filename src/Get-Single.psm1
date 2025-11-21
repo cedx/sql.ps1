@@ -1,4 +1,3 @@
-using namespace System.Collections.Specialized
 using module ./Invoke-Reader.psm1
 
 <#
@@ -9,7 +8,9 @@ using module ./Invoke-Reader.psm1
 .PARAMETER Command
 	The SQL query to be executed.
 .PARAMETER Parameters
-	The parameters of the SQL query.
+	The named parameters of the SQL query.
+.PARAMETER PositionalParameters
+	The positional parameters of the SQL query.
 .PARAMETER As
 	The type of object to return.
 .PARAMETER Timeout
@@ -30,7 +31,10 @@ function Get-Single {
 
 		[Parameter(Position = 2)]
 		[ValidateNotNull()]
-		[OrderedDictionary] $Parameters = @{},
+		[hashtable] $Parameters = @{},
+
+		[ValidateNotNull()]
+		[object[]] $PositionalParameters = @(),
 
 		[ValidateNotNull()]
 		[type] $As = ([psobject]),
@@ -39,7 +43,7 @@ function Get-Single {
 		[int] $Timeout = 30
 	)
 
-	$adapter = Invoke-Reader $Connection -Command $Command -Parameters $Parameters -Timeout $Timeout
+	$adapter = Invoke-Reader $Connection -Command $Command -Parameters $Parameters -PositionalParameters $PositionalParameters -Timeout $Timeout
 	$record = $null
 	$rowCount = 0
 	while ($adapter.Reader.Read()) {

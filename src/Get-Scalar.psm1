@@ -1,4 +1,3 @@
-using namespace System.Collections.Specialized
 using module ./New-Command.psm1
 
 <#
@@ -9,7 +8,9 @@ using module ./New-Command.psm1
 .PARAMETER Command
 	The SQL query to be executed.
 .PARAMETER Parameters
-	The parameters of the SQL query.
+	The named parameters of the SQL query.
+.PARAMETER PositionalParameters
+	The positional parameters of the SQL query.
 .PARAMETER Timeout
 	The wait time, in seconds, before terminating the attempt to execute the command and generating an error.
 .OUTPUTS
@@ -27,14 +28,17 @@ function Get-Scalar {
 
 		[Parameter(Position = 2)]
 		[ValidateNotNull()]
-		[OrderedDictionary] $Parameters = @{},
+		[hashtable] $Parameters = @{},
+
+		[ValidateNotNull()]
+		[object[]] $PositionalParameters = @(),
 
 		[ValidateRange("NonNegative")]
 		[int] $Timeout = 30
 	)
 
 	if ($Connection.State -eq [System.Data.ConnectionState]::Closed) { $Connection.Open() }
-	$dbCommand = New-Command $Connection -Command $Command -Parameters $Parameters -Timeout $Timeout
+	$dbCommand = New-Command $Connection -Command $Command -Parameters $Parameters -PositionalParameters $PositionalParameters -Timeout $Timeout
 	$value = $dbCommand.ExecuteScalar()
 	$dbCommand.Dispose()
 	$value -is [DBNull] ? $null : $value

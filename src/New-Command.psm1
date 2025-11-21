@@ -1,4 +1,3 @@
-using namespace System.Collections.Specialized
 using namespace System.Diagnostics.CodeAnalysis
 using module ./New-Parameter.psm1
 
@@ -10,7 +9,9 @@ using module ./New-Parameter.psm1
 .PARAMETER Command
 	The SQL query to be executed.
 .PARAMETER Parameters
-	The parameters of the SQL query.
+	The named parameters of the SQL query.
+.PARAMETER PositionalParameters
+	The positional parameters of the SQL query.
 .PARAMETER Timeout
 	The wait time, in seconds, before terminating the attempt to execute the command and generating an error.
 .OUTPUTS
@@ -29,7 +30,10 @@ function New-Command {
 
 		[Parameter(Position = 2)]
 		[ValidateNotNull()]
-		[OrderedDictionary] $Parameters = @{},
+		[hashtable] $Parameters = @{},
+
+		[ValidateNotNull()]
+		[object[]] $PositionalParameters = @(),
 
 		[ValidateRange("NonNegative")]
 		[int] $Timeout = 30
@@ -38,6 +42,11 @@ function New-Command {
 	$dbCommand = $Connection.CreateCommand()
 	$dbCommand.CommandText = $Command
 	$dbCommand.CommandTimeout = $Timeout
+
+	for ($index = 0; $index -lt $PositionalParameters; $index++) {
+		$dbParameter = New-Parameter $dbCommand -Name "QuestionMark$index" -Value $PositionalParameters[$index]
+		$dbCommand.Parameters.Add($dbParameter) | Out-Null
+	}
 
 	foreach ($key in $Parameters.Keys) {
 		$dbParameter = New-Parameter $dbCommand -Name "@$key" -Value $Parameters.$key

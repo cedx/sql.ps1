@@ -1,3 +1,4 @@
+using namespace System.Collections.Specialized
 using module ./New-Command.psm1
 using module ./Mapping/DataAdapter.psm1
 using module ./Mapping/DataMapper.psm1
@@ -28,7 +29,7 @@ function Invoke-Reader {
 
 		[Parameter(Position = 2)]
 		[ValidateNotNull()]
-		[hashtable] $Parameters = @{},
+		[OrderedDictionary] $Parameters = @{},
 
 		[ValidateRange("NonNegative")]
 		[int] $Timeout = 30

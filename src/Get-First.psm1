@@ -1,3 +1,4 @@
+using namespace System.Collections.Specialized
 using module ./Invoke-Reader.psm1
 
 <#
@@ -29,7 +30,7 @@ function Get-First {
 
 		[Parameter(Position = 2)]
 		[ValidateNotNull()]
-		[hashtable] $Parameters = @{},
+		[OrderedDictionary] $Parameters = @{},
 
 		[ValidateNotNull()]
 		[type] $As = ([psobject]),

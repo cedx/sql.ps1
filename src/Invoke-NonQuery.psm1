@@ -1,3 +1,4 @@
+using namespace System.Collections.Specialized
 using module ./New-Command.psm1
 
 <#
@@ -26,7 +27,7 @@ function Invoke-NonQuery {
 
 		[Parameter(Position = 2)]
 		[ValidateNotNull()]
-		[hashtable] $Parameters = @{},
+		[OrderedDictionary] $Parameters = @{},
 
 		[ValidateRange("NonNegative")]
 		[int] $Timeout = 30

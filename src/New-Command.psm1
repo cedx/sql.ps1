@@ -1,3 +1,4 @@
+using namespace System.Collections.Specialized
 using namespace System.Diagnostics.CodeAnalysis
 using module ./New-Parameter.psm1
 
@@ -28,7 +29,7 @@ function New-Command {
 
 		[Parameter(Position = 2)]
 		[ValidateNotNull()]
-		[hashtable] $Parameters = @{},
+		[OrderedDictionary] $Parameters = @{},
 
 		[ValidateRange("NonNegative")]
 		[int] $Timeout = 30

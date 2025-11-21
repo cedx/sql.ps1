@@ -43,7 +43,7 @@ function New-Command {
 	$dbCommand.CommandText = $Command
 	$dbCommand.CommandTimeout = $Timeout
 
-	for ($index = 0; $index -lt $PositionalParameters; $index++) {
+	for ($index = 0; $index -lt $PositionalParameters.Count; $index++) {
 		$dbParameter = New-Parameter $dbCommand -Name "QuestionMark$index" -Value $PositionalParameters[$index]
 		$dbCommand.Parameters.Add($dbParameter) | Out-Null
 	}

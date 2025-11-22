@@ -1,4 +1,4 @@
-. "$PSScriptRoot/Default.ps1"
+& "$PSScriptRoot/Default.ps1"
 
 "Publishing the module..."
 $module = Get-Item "Sql.psd1"

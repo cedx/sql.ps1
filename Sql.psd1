@@ -25,6 +25,7 @@
 		"Invoke-Reader"
 		"New-Command"
 		"New-Connection"
+		"New-DataMapper"
 		"New-Parameter"
 	)
 
@@ -38,6 +39,7 @@
 		"src/Invoke-Reader.psm1"
 		"src/New-Command.psm1"
 		"src/New-Connection.psm1"
+		"src/New-DataMapper.psm1"
 		"src/New-Parameter.psm1"
 	)
 

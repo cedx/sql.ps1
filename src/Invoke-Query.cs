@@ -5,7 +5,7 @@ using System.Collections;
 using System.Data;
 
 /// <summary>
-/// Closes the specified database connection.
+/// Executes a parameterized SQL query and returns an array of objects whose properties correspond to the columns.
 /// </summary>
 [Cmdlet(VerbsLifecycle.Invoke, "Query")]
 [OutputType(typeof(object[]))]
@@ -58,6 +58,6 @@ public class InvokeQuery: Cmdlet {
 			.Invoke<DataAdapter>()
 			.First();
 
-		WriteObject(adapter.Mapper.CreateInstances(As ?? typeof(PSObject), adapter.Reader));
+		WriteObject(adapter.Mapper.CreateInstances(As ?? typeof(PSObject), adapter.Reader).ToArray());
 	}
 }

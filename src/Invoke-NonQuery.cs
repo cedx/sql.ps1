@@ -4,7 +4,7 @@ using System.Collections;
 using System.Data;
 
 /// <summary>
-/// Closes the specified database connection.
+/// Executes a parameterized SQL statement.
 /// </summary>
 [Cmdlet(VerbsLifecycle.Invoke, "NonQuery")]
 [OutputType(typeof(int))]

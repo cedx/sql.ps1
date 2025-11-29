@@ -1,16 +1,15 @@
 namespace Belin.Sql.Cmdlets;
 
-using Belin.Sql.Mapping;
 using System.Collections;
 using System.Data;
 
 /// <summary>
-/// Executes a parameterized SQL query and returns a data reader.
+/// Executes a parameterized SQL query that selects a single value.
 /// </summary>
-[Cmdlet(VerbsLifecycle.Invoke, "Reader")]
-[OutputType(typeof(DataAdapter))]
-public class InvokeReader: Cmdlet {
-	
+[Cmdlet(VerbsCommon.Get, "Scalar")]
+[OutputType(typeof(object))]
+public class GetScalar: Cmdlet {
+		
 	/// <summary>
 	/// The SQL query to be executed.
 	/// </summary>
@@ -52,6 +51,7 @@ public class InvokeReader: Cmdlet {
 			.Invoke<IDbCommand>()
 			.First();
 
-		WriteObject(new DataAdapter(Mapper: new(), Reader: command.ExecuteReader()));
+		var value = command.ExecuteScalar();
+		WriteObject(value is DBNull ? null : value);
 	}
 }

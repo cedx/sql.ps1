@@ -72,6 +72,9 @@ public sealed class DataMapper {
 	/// <param name="properties">A dictionary providing the properties to be set on the created object.</param>
 	/// <returns>The newly created object.</returns>
 	public object CreateInstance(Type type, IDictionary<string, object?> properties) {
+		if (type == typeof(Hashtable)) return new Hashtable(properties.ToDictionary());
+		if (type == typeof(PSObject)) return (PSObject) new Hashtable(properties.ToDictionary());
+
 		var culture = CultureInfo.InvariantCulture;
 		var instance = Activator.CreateInstance(type)!;
 		var propertyMap = GetPropertyMap(type);

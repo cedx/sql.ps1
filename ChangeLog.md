@@ -1,5 +1,8 @@
 # Changelog
 
+## Version [0.7.0](https://github.com/cedx/sql.ps1/compare/v0.6.0...v0.7.0)
+- Ported the cmdlets to [C#](https://learn.microsoft.com/en-us/dotnet/csharp).
+
 ## Version [0.6.0](https://github.com/cedx/sql.ps1/compare/v0.5.1...v0.6.0)
 - Added the `New-DataMapper` cmdlet.
 - Fixed the deserialization of `Enum` and `Nullable` types.

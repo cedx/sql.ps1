@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<Company>Cedric-Belin.fr</Company>
+		<Copyright>© Cédric Belin</Copyright>
+		<Description>A simple micro-ORM supporting MySQL, PostgreSQL, SQL Server and SQLite.</Description>
+		<Product>SQL Client for PowerShell</Product>
+		<Version>0.7.0</Version>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+		<AssemblyName>Belin.Sql.Cmdlets</AssemblyName>
+		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<OutDir>../bin</OutDir>
+		<TargetFramework>net9.0</TargetFramework>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="System.Management.Automation" Version="7.*" PrivateAssets="All" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Using Include="System.Management.Automation" />
+	</ItemGroup>
+</Project>

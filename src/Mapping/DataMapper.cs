@@ -22,14 +22,22 @@ public sealed class DataMapper {
 	/// <typeparam name="T">The object type.</typeparam>
 	/// <param name="record">A data record providing the properties to be set on the created object.</param>
 	/// <returns>The newly created object.</returns>
-	public T CreateInstance<T>(IDataRecord record) {
+	public T CreateInstance<T>(IDataRecord record) => (T) CreateInstance(typeof(T), record);
+
+	/// <summary>
+	/// Creates a new object of a given type from the specified data record.
+	/// </summary>
+	/// <param name="type">The object type.</param>
+	/// <param name="record">A data record providing the properties to be set on the created object.</param>
+	/// <returns>The newly created object.</returns>
+	public object CreateInstance(Type type, IDataRecord record) {
 		var properties = new Dictionary<string, object?>();
 		for (var index = 0; index < record.FieldCount; index++) {
 			var key = record.GetName(index);
 			properties[key] = record.IsDBNull(index) ? null : record.GetValue(index);
 		}
 
-		return CreateInstance<T>(properties);
+		return CreateInstance(type, properties);
 	}
 
 	/// <summary>
@@ -38,8 +46,16 @@ public sealed class DataMapper {
 	/// <typeparam name="T">The object type.</typeparam>
 	/// <param name="properties">A hash table providing the properties to be set on the created object.</param>
 	/// <returns>The newly created object.</returns>
-	public T CreateInstance<T>(Hashtable properties) =>
-		CreateInstance<T>(properties.Cast<DictionaryEntry>().ToDictionary(entry => entry.Key.ToString()!, entry => entry.Value));
+	public T CreateInstance<T>(Hashtable properties) => (T) CreateInstance(typeof(T), properties);
+
+	/// <summary>
+	/// Creates a new object of a given type from the specified hash table.
+	/// </summary>
+	/// <param name="T">The object type.</param>
+	/// <param name="properties">A hash table providing the properties to be set on the created object.</param>
+	/// <returns>The newly created object.</returns>
+	public object CreateInstance(Type type, Hashtable properties) =>
+		CreateInstance(type, properties.Cast<DictionaryEntry>().ToDictionary(entry => entry.Key.ToString()!, entry => entry.Value));
 
 	/// <summary>
 	/// Creates a new object of a given type from the specified dictionary.
@@ -47,10 +63,18 @@ public sealed class DataMapper {
 	/// <typeparam name="T">The object type.</typeparam>
 	/// <param name="properties">A dictionary providing the properties to be set on the created object.</param>
 	/// <returns>The newly created object.</returns>
-	public T CreateInstance<T>(IDictionary<string, object?> properties) {
+	public T CreateInstance<T>(IDictionary<string, object?> properties) => (T) CreateInstance(typeof(T), properties);
+
+	/// <summary>
+	/// Creates a new object of a given type from the specified dictionary.
+	/// </summary>
+	/// <param name="type">The object type.</param>
+	/// <param name="properties">A dictionary providing the properties to be set on the created object.</param>
+	/// <returns>The newly created object.</returns>
+	public object CreateInstance(Type type, IDictionary<string, object?> properties) {
 		var culture = CultureInfo.InvariantCulture;
-		var instance = Activator.CreateInstance<T>();
-		var propertyMap = GetPropertyMap<T>();
+		var instance = Activator.CreateInstance(type)!;
+		var propertyMap = GetPropertyMap(type);
 
 		foreach (var key in properties.Keys.Where(propertyMap.ContainsKey)) {
 			var propertyInfo = propertyMap[key];
@@ -73,8 +97,16 @@ public sealed class DataMapper {
 	/// <typeparam name="T">The object type.</typeparam>
 	/// <param name="reader">A data reader providing the properties to be set on the created objects.</param>
 	/// <returns>An enumerable of newly created objects.</returns>
-	public IEnumerable<T> CreateInstances<T>(IDataReader reader) {
-		while (reader.Read()) yield return CreateInstance<T>(reader);
+	public IEnumerable<T> CreateInstances<T>(IDataReader reader) => (IEnumerable<T>) CreateInstances(typeof(T), reader);
+	
+	/// <summary>
+	/// Creates new objects of a given type from the specified data reader.
+	/// </summary>
+	/// <param name="type">The object type.</param>
+	/// <param name="reader">A data reader providing the properties to be set on the created objects.</param>
+	/// <returns>An enumerable of newly created objects.</returns>
+	public IEnumerable<object> CreateInstances(Type type, IDataReader reader) {
+		while (reader.Read()) yield return CreateInstance(type, reader);
 		reader.Close();
 	}
 
@@ -83,8 +115,14 @@ public sealed class DataMapper {
 	/// </summary>
 	/// <typeparam name="T">The type to inspect.</typeparam>
 	/// <returns>The dictionary of mapped properties of the specified type.</returns>
-	public IDictionary<string, PropertyInfo> GetPropertyMap<T>() {
-		var type = typeof(T);
+	public IDictionary<string, PropertyInfo> GetPropertyMap<T>() => GetPropertyMap(typeof(T));
+
+	/// <summary>
+	/// Retrives a dictionary of mapped properties of the specified type.
+	/// </summary>
+	/// <param name="type">The type to inspect.</param>
+	/// <returns>The dictionary of mapped properties of the specified type.</returns>
+	public IDictionary<string, PropertyInfo> GetPropertyMap(Type type) {
 		if (propertyMaps.TryGetValue(type, out var value)) return value;
 
 		var propertyInfos = type

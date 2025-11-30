@@ -65,8 +65,8 @@ public class GetSingle: Cmdlet {
 
 		adapter.Reader.Close();
 		if (rowCount != 1) {
-			var exception = new InvalidOperationException("The result set is empty or contains more than one record.");
-			WriteError(new ErrorRecord(exception, "InvalidResultSet", ErrorCategory.InvalidOperation, null));
+			var exception = new InvalidOperationException("The record set is empty or contains more than one record.");
+			WriteError(new ErrorRecord(exception, "InvalidRecordSet", ErrorCategory.InvalidOperation, null));
 		}
 
 		WriteObject(rowCount == 1 ? record : null);

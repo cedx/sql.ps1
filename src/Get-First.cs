@@ -60,8 +60,8 @@ public class GetFirst: Cmdlet {
 		adapter.Reader.Close();
 
 		if (record is null) {
-			var exception = new InvalidOperationException("The result set is empty.");
-			WriteError(new ErrorRecord(exception, "EmptyResultSet", ErrorCategory.InvalidOperation, null));
+			var exception = new InvalidOperationException("The record set is empty.");
+			WriteError(new ErrorRecord(exception, "EmptyRecordSet", ErrorCategory.InvalidOperation, null));
 		}
 
 		WriteObject(record);

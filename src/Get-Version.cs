@@ -28,8 +28,8 @@ public partial class GetVersion: Cmdlet {
 	/// Performs execution of this command.
 	/// </summary>
 	protected override void ProcessRecord() {
-		if (Connection is DbConnection connection) {
-			var match = VersionPattern().Match(connection.ServerVersion);
+		if (Connection is DbConnection dbConnection) {
+			var match = VersionPattern().Match(dbConnection.ServerVersion);
 			if (match.Success) {
 				WriteObject(Version.Parse(match.Value));
 				return;
@@ -37,7 +37,7 @@ public partial class GetVersion: Cmdlet {
 		}
 
 		var exception = new InvalidOperationException("The server version could not be determined.");
-		WriteError(new ErrorRecord(exception, "UnknownVersion", ErrorCategory.InvalidOperation, null));
+		WriteError(new ErrorRecord(exception, "UnknownServerVersion", ErrorCategory.InvalidOperation, null));
 		WriteObject(null);
 	}
 }

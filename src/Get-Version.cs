@@ -19,6 +19,19 @@ public partial class GetVersion: Cmdlet {
 	private static partial Regex VersionPattern();
 
 	/// <summary>
+	/// The SQL query to be executed.
+	/// </summary>
+	public string? Command => Connection.GetType().FullName switch {
+		"Microsoft.Data.SqlClient.SqlConnection" => "SELECT SERVERPROPERTY('ProductVersion')",
+		"Microsoft.Data.Sqlite.SqlConnection" => "SELECT sqlite_version()",
+		"MySql.Data.MySqlClient.MySqlConnection" => "SELECT VERSION()",
+		"MySqlConnector.MySqlConnection" => "SELECT VERSION()",
+		"Npgsql.NpgsqlConnection" => "SHOW server_version",
+		"System.Data.SqlClient.SqlConnection" => "SELECT SERVERPROPERTY('ProductVersion')",
+		_ => null
+	};
+
+	/// <summary>
 	/// The connection to the data source.
 	/// </summary>
 	[Parameter(Mandatory = true, Position = 0)]
@@ -28,8 +41,12 @@ public partial class GetVersion: Cmdlet {
 	/// Performs execution of this command.
 	/// </summary>
 	protected override void ProcessRecord() {
-		if (Connection is DbConnection dbConnection) {
-			var match = VersionPattern().Match(dbConnection.ServerVersion);
+		var version = Command is not string command ? null : new GetScalar { Connection = Connection, Command = command }
+			.Invoke<string?>()
+			.Single();
+
+		if (version is not null) {
+			var match = VersionPattern().Match(version);
 			if (match.Success) {
 				WriteObject(Version.Parse(match.Value));
 				return;

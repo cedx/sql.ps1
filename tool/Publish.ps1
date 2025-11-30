@@ -5,16 +5,18 @@ else {
 }
 
 "Publishing the module..."
-$module = Get-Item "Sql.psd1"
-$version = (Import-PowerShellDataFile $module).ModuleVersion
-git tag "v$version"
-git push origin "v$version"
+$module = Import-PowerShellDataFile "Sql.psd1"
+$version = "v$($module.ModuleVersion)"
+git tag $version
+git push origin $version
 
-$output = "var/$($module.BaseName)"
+$name = Split-Path "Sql.psd1" -LeafBase
+$output = "var/$name"
 New-Item $output/bin -ItemType Directory | Out-Null
-Copy-Item $module $output
+Copy-Item "$name.psd1" $output
 Copy-Item *.md $output
-Copy-Item bin/Belin.*.dll $output/bin
+Copy-Item $module.RootModule $output/bin
+if ("RequiredAssemblies" -in $module.Keys) { Copy-Item $module.RequiredAssemblies $output/bin }
 
 Compress-PSResource $output var
 Publish-PSResource -ApiKey $Env:PSGALLERY_API_KEY -NupkgPath "var/$($module.BaseName).$version.nupkg"

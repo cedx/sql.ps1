@@ -16,7 +16,7 @@ public class GetFirst: Cmdlet {
 	/// </summary>
 	[Parameter]
 	public Type? As { get; set; }
-		
+
 	/// <summary>
 	/// The SQL query to be executed.
 	/// </summary>
@@ -28,13 +28,13 @@ public class GetFirst: Cmdlet {
 	/// </summary>
 	[Parameter(Mandatory = true, Position = 0)]
 	public required IDbConnection Connection { get; set; }
-		
+
 	/// <summary>
 	/// The named parameters of the SQL query.
 	/// </summary>
 	[Parameter(Position = 2)]
 	public Hashtable? Parameters { get; set; }
-		
+
 	/// <summary>
 	/// The positional parameters of the SQL query.
 	/// </summary>
@@ -54,14 +54,14 @@ public class GetFirst: Cmdlet {
 		var adapter =
 			new InvokeReader { Command = Command, Connection = Connection, Parameters = Parameters, PositionalParameters = PositionalParameters, Timeout = Timeout }
 			.Invoke<DataAdapter>()
-			.First();
+			.Single();
 
 		var record = adapter.Reader.Read() ? adapter.Mapper.CreateInstance(As ?? typeof(PSObject), adapter.Reader) : null;
 		adapter.Reader.Close();
 
 		if (record is null) {
 			var exception = new InvalidOperationException("The result set is empty.");
-			ThrowTerminatingError(new ErrorRecord(exception, "Get-First", ErrorCategory.InvalidOperation, record));
+			WriteError(new ErrorRecord(exception, "EmptyResultSet", ErrorCategory.InvalidOperation, null));
 		}
 
 		WriteObject(record);

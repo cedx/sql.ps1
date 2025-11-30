@@ -56,7 +56,7 @@ public class InvokeQuery: Cmdlet {
 		var adapter =
 			new InvokeReader { Command = Command, Connection = Connection, Parameters = Parameters, PositionalParameters = PositionalParameters, Timeout = Timeout }
 			.Invoke<DataAdapter>()
-			.First();
+			.Single();
 
 		WriteObject(adapter.Mapper.CreateInstances(As ?? typeof(PSObject), adapter.Reader).ToArray());
 	}

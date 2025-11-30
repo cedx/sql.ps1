@@ -49,7 +49,7 @@ public class GetScalar: Cmdlet {
 		using var command =
 			new NewCommand { Command = Command, Connection = Connection, Parameters = Parameters, PositionalParameters = PositionalParameters, Timeout = Timeout }
 			.Invoke<IDbCommand>()
-			.First();
+			.Single();
 
 		var value = command.ExecuteScalar();
 		WriteObject(value is DBNull ? null : value);

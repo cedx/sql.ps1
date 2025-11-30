@@ -49,7 +49,7 @@ public class InvokeNonQuery: Cmdlet {
 		using var command =
 			new NewCommand { Command = Command, Connection = Connection, Parameters = Parameters, PositionalParameters = PositionalParameters, Timeout = Timeout }
 			.Invoke<IDbCommand>()
-			.First();
+			.Single();
 
 		WriteObject(command.ExecuteNonQuery());
 	}

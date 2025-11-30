@@ -50,12 +50,12 @@ public class NewCommand: Cmdlet {
 
 		if (PositionalParameters is not null) for (var index = 0; index < PositionalParameters.Length; index++) {
 			var parameters = new NewParameter { Command = command, Name = $"QuestionMark{index}", Value = PositionalParameters[index] };
-			command.Parameters.Add(parameters.Invoke<IDbDataParameter>().First());
+			command.Parameters.Add(parameters.Invoke<IDbDataParameter>().Single());
 		}
 
 		if (Parameters is not null) foreach (var key in Parameters.Keys) {
 			var parameters = new NewParameter { Command = command, Name = $"@{key}", Value = Parameters[key] };
-			command.Parameters.Add(parameters.Invoke<IDbDataParameter>().First());
+			command.Parameters.Add(parameters.Invoke<IDbDataParameter>().Single());
 		}
 
 		WriteObject(command);

@@ -3,7 +3,6 @@ namespace Belin.Sql.Cmdlets;
 using Belin.Sql.Mapping;
 using System.Collections;
 using System.Data;
-using System.Reflection.PortableExecutable;
 
 /// <summary>
 /// Executes a parameterized SQL query and returns the single row.
@@ -17,7 +16,7 @@ public class GetSingle: Cmdlet {
 	/// </summary>
 	[Parameter]
 	public Type? As { get; set; }
-		
+
 	/// <summary>
 	/// The SQL query to be executed.
 	/// </summary>
@@ -29,13 +28,13 @@ public class GetSingle: Cmdlet {
 	/// </summary>
 	[Parameter(Mandatory = true, Position = 0)]
 	public required IDbConnection Connection { get; set; }
-		
+
 	/// <summary>
 	/// The named parameters of the SQL query.
 	/// </summary>
 	[Parameter(Position = 2)]
 	public Hashtable? Parameters { get; set; }
-		
+
 	/// <summary>
 	/// The positional parameters of the SQL query.
 	/// </summary>
@@ -55,7 +54,7 @@ public class GetSingle: Cmdlet {
 		var adapter =
 			new InvokeReader { Command = Command, Connection = Connection, Parameters = Parameters, PositionalParameters = PositionalParameters, Timeout = Timeout }
 			.Invoke<DataAdapter>()
-			.First();
+			.Single();
 
 		object? record = null;
 		var rowCount = 0;
@@ -67,9 +66,9 @@ public class GetSingle: Cmdlet {
 		adapter.Reader.Close();
 		if (rowCount != 1) {
 			var exception = new InvalidOperationException("The result set is empty or contains more than one record.");
-			ThrowTerminatingError(new ErrorRecord(exception, "Get-Single", ErrorCategory.InvalidOperation, record));
+			WriteError(new ErrorRecord(exception, "InvalidResultSet", ErrorCategory.InvalidOperation, null));
 		}
 
-		WriteObject(record);
+		WriteObject(rowCount == 1 ? record : null);
 	}
 }

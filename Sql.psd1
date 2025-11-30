@@ -7,7 +7,7 @@
 	Author = "Cédric Belin <cedx@outlook.com>"
 	CompanyName = "Cedric-Belin.fr"
 	Copyright = "© Cédric Belin"
-	Description = "A simple micro-ORM supporting MySQL, PostgreSQL, SQL Server and SQLite."
+	Description = "A simple micro-ORM for PowerShell, based on ADO.NET."
 	GUID = "d2b1c123-e1bc-4cca-84c5-af102244e3c5"
 
 	AliasesToExport = @()

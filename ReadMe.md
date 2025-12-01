@@ -1,7 +1,7 @@
-# SQL Client for PowerShell
+# SQL Mapper for PowerShell
 Simple micro-ORM used to simplify working with [ADO.NET](https://learn.microsoft.com/en-us/dotnet/framework/data/adonet)
 in [PowerShell](https://learn.microsoft.com/en-us/powershell).  
-If you like [SQL](https://en.wikipedia.org/wiki/SQL) but dislike the boilerplate of ADO.NET: **SQL Client for PowerShell** is for you!
+If you like [SQL](https://en.wikipedia.org/wiki/SQL) but dislike the boilerplate of ADO.NET: **SQL Mapper for PowerShell** is for you!
 
 ## Documentation
 - [User guide](https://github.com/cedx/sql.ps1/wiki)
@@ -12,4 +12,4 @@ If you like [SQL](https://en.wikipedia.org/wiki/SQL) but dislike the boilerplate
 - [Submit an issue](https://github.com/cedx/sql.ps1/issues)
 
 ## License
-[SQL Client for PowerShell](https://github.com/cedx/sql.ps1) is distributed under the MIT License.
+[SQL Mapper for PowerShell](https://github.com/cedx/sql.ps1) is distributed under the MIT License.

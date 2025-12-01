@@ -2,8 +2,8 @@
 	<PropertyGroup>
 		<Company>Cedric-Belin.fr</Company>
 		<Copyright>© Cédric Belin</Copyright>
-		<Description>A simple micro-ORM for PowerShell, based on ADO.NET.</Description>
-		<Product>SQL Client for PowerShell</Product>
+		<Description>A simple micro-ORM for PowerShell, based on ADO.NET and data annotations.</Description>
+		<Product>SQL Mapper for PowerShell</Product>
 		<Version>0.7.0</Version>
 	</PropertyGroup>
 

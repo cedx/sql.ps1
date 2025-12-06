@@ -1,14 +1,21 @@
-namespace Belin.Sql;
+namespace Belin.Sql.Cmdlets;
 
+using Belin.Sql.Cmdlets.Mapping;
 using System.Collections;
 using System.Data;
 
 /// <summary>
-/// Executes a parameterized SQL statement.
+/// Executes a parameterized SQL query and returns the single row.
 /// </summary>
-[Cmdlet(VerbsLifecycle.Invoke, "NonQuery")]
-[OutputType(typeof(int))]
-public class InvokeNonQuery: Cmdlet {
+[Cmdlet(VerbsCommon.Get, "Single")]
+[OutputType(typeof(object))]
+public class GetSingleCommand: Cmdlet {
+
+	/// <summary>
+	/// The type of objects to return.
+	/// </summary>
+	[Parameter]
+	public Type? As { get; set; }
 
 	/// <summary>
 	/// The SQL query to be executed.
@@ -44,13 +51,24 @@ public class InvokeNonQuery: Cmdlet {
 	/// Performs execution of this command.
 	/// </summary>
 	protected override void ProcessRecord() {
-		if (Connection.State == ConnectionState.Closed) Connection.Open();
-
-		using var command =
-			new NewCommand { Command = Command, Connection = Connection, Parameters = Parameters, PositionalParameters = PositionalParameters, Timeout = Timeout }
-			.Invoke<IDbCommand>()
+		var adapter =
+			new InvokeReaderCommand { Command = Command, Connection = Connection, Parameters = Parameters, PositionalParameters = PositionalParameters, Timeout = Timeout }
+			.Invoke<DataAdapter>()
 			.Single();
 
-		WriteObject(command.ExecuteNonQuery());
+		object? record = null;
+		var rowCount = 0;
+		while (adapter.Reader.Read()) {
+			if (++rowCount > 1) break;
+			record = adapter.Mapper.CreateInstance(As ?? typeof(PSObject), adapter.Reader);
+		}
+
+		adapter.Reader.Close();
+		if (rowCount != 1) {
+			var exception = new InvalidOperationException("The record set is empty or contains more than one record.");
+			WriteError(new ErrorRecord(exception, "InvalidRecordSet", ErrorCategory.InvalidOperation, null));
+		}
+
+		WriteObject(rowCount == 1 ? record : null);
 	}
 }

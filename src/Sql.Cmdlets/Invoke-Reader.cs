@@ -1,21 +1,15 @@
-namespace Belin.Sql;
+namespace Belin.Sql.Cmdlets;
 
-using Belin.Sql.Mapping;
+using Belin.Sql.Cmdlets.Mapping;
 using System.Collections;
 using System.Data;
 
 /// <summary>
-/// Executes a parameterized SQL query and returns the first row.
+/// Executes a parameterized SQL query and returns a data reader.
 /// </summary>
-[Cmdlet(VerbsCommon.Get, "First")]
-[OutputType(typeof(object))]
-public class GetFirst: Cmdlet {
-
-	/// <summary>
-	/// The type of objects to return.
-	/// </summary>
-	[Parameter]
-	public Type? As { get; set; }
+[Cmdlet(VerbsLifecycle.Invoke, "Reader")]
+[OutputType(typeof(DataAdapter))]
+public class InvokeReaderCommand: Cmdlet {
 
 	/// <summary>
 	/// The SQL query to be executed.
@@ -51,19 +45,13 @@ public class GetFirst: Cmdlet {
 	/// Performs execution of this command.
 	/// </summary>
 	protected override void ProcessRecord() {
-		var adapter =
-			new InvokeReader { Command = Command, Connection = Connection, Parameters = Parameters, PositionalParameters = PositionalParameters, Timeout = Timeout }
-			.Invoke<DataAdapter>()
+		if (Connection.State == ConnectionState.Closed) Connection.Open();
+
+		using var command =
+			new NewCommandCommand { Command = Command, Connection = Connection, Parameters = Parameters, PositionalParameters = PositionalParameters, Timeout = Timeout }
+			.Invoke<IDbCommand>()
 			.Single();
 
-		var record = adapter.Reader.Read() ? adapter.Mapper.CreateInstance(As ?? typeof(PSObject), adapter.Reader) : null;
-		adapter.Reader.Close();
-
-		if (record is null) {
-			var exception = new InvalidOperationException("The record set is empty.");
-			WriteError(new ErrorRecord(exception, "EmptyRecordSet", ErrorCategory.InvalidOperation, null));
-		}
-
-		WriteObject(record);
+		WriteObject(new DataAdapter(Mapper: new(), Reader: command.ExecuteReader()));
 	}
 }

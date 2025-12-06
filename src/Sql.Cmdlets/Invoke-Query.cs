@@ -1,6 +1,6 @@
-namespace Belin.Sql;
+namespace Belin.Sql.Cmdlets;
 
-using Belin.Sql.Mapping;
+using Belin.Sql.Cmdlets.Mapping;
 using System.Collections;
 using System.Data;
 
@@ -9,7 +9,7 @@ using System.Data;
 /// </summary>
 [Cmdlet(VerbsLifecycle.Invoke, "Query")]
 [OutputType(typeof(object[]))]
-public class InvokeQuery: Cmdlet {
+public class InvokeQueryCommand: Cmdlet {
 
 	/// <summary>
 	/// The type of objects to return.
@@ -54,7 +54,7 @@ public class InvokeQuery: Cmdlet {
 		if (Connection.State == ConnectionState.Closed) Connection.Open();
 
 		var adapter =
-			new InvokeReader { Command = Command, Connection = Connection, Parameters = Parameters, PositionalParameters = PositionalParameters, Timeout = Timeout }
+			new InvokeReaderCommand { Command = Command, Connection = Connection, Parameters = Parameters, PositionalParameters = PositionalParameters, Timeout = Timeout }
 			.Invoke<DataAdapter>()
 			.Single();
 

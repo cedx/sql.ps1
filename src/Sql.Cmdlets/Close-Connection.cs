@@ -1,4 +1,4 @@
-namespace Belin.Sql;
+namespace Belin.Sql.Cmdlets;
 
 using System.Data;
 
@@ -7,7 +7,7 @@ using System.Data;
 /// </summary>
 [Cmdlet(VerbsCommon.Close, "Connection")]
 [OutputType(typeof(void))]
-public class CloseConnection: Cmdlet {
+public class CloseConnectionCommand: Cmdlet {
 
 	/// <summary>
 	/// The connection to the data source.

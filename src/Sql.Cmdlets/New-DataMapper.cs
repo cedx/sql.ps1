@@ -1,13 +1,13 @@
-namespace Belin.Sql;
+namespace Belin.Sql.Cmdlets;
 
-using Belin.Sql.Mapping;
+using Belin.Sql.Cmdlets.Mapping;
 
 /// <summary>
 /// Creates a new data mapper.
 /// </summary>
 [Cmdlet(VerbsCommon.New, "DataMapper")]
 [OutputType(typeof(DataMapper))]
-public class NewDataMapper: Cmdlet {
+public class NewDataMapperCommand: Cmdlet {
 
 	/// <summary>
 	/// Performs execution of this command.

@@ -1,4 +1,4 @@
-namespace Belin.Sql;
+namespace Belin.Sql.Cmdlets;
 
 using System.Collections;
 using System.Data;
@@ -8,7 +8,7 @@ using System.Data;
 /// </summary>
 [Cmdlet(VerbsCommon.Get, "Scalar")]
 [OutputType(typeof(object))]
-public class GetScalar: Cmdlet {
+public class GetScalarCommand: Cmdlet {
 
 	/// <summary>
 	/// The SQL query to be executed.
@@ -47,7 +47,7 @@ public class GetScalar: Cmdlet {
 		if (Connection.State == ConnectionState.Closed) Connection.Open();
 
 		using var command =
-			new NewCommand { Command = Command, Connection = Connection, Parameters = Parameters, PositionalParameters = PositionalParameters, Timeout = Timeout }
+			new NewCommandCommand { Command = Command, Connection = Connection, Parameters = Parameters, PositionalParameters = PositionalParameters, Timeout = Timeout }
 			.Invoke<IDbCommand>()
 			.Single();
 

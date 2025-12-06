@@ -1,15 +1,14 @@
-namespace Belin.Sql;
+namespace Belin.Sql.Cmdlets;
 
-using Belin.Sql.Mapping;
 using System.Collections;
 using System.Data;
 
 /// <summary>
-/// Executes a parameterized SQL query and returns a data reader.
+/// Executes a parameterized SQL statement.
 /// </summary>
-[Cmdlet(VerbsLifecycle.Invoke, "Reader")]
-[OutputType(typeof(DataAdapter))]
-public class InvokeReader: Cmdlet {
+[Cmdlet(VerbsLifecycle.Invoke, "NonQuery")]
+[OutputType(typeof(int))]
+public class InvokeNonQueryCommand: Cmdlet {
 
 	/// <summary>
 	/// The SQL query to be executed.
@@ -48,10 +47,10 @@ public class InvokeReader: Cmdlet {
 		if (Connection.State == ConnectionState.Closed) Connection.Open();
 
 		using var command =
-			new NewCommand { Command = Command, Connection = Connection, Parameters = Parameters, PositionalParameters = PositionalParameters, Timeout = Timeout }
+			new NewCommandCommand { Command = Command, Connection = Connection, Parameters = Parameters, PositionalParameters = PositionalParameters, Timeout = Timeout }
 			.Invoke<IDbCommand>()
 			.Single();
 
-		WriteObject(new DataAdapter(Mapper: new(), Reader: command.ExecuteReader()));
+		WriteObject(command.ExecuteNonQuery());
 	}
 }

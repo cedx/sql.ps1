@@ -1,4 +1,4 @@
-namespace Belin.Sql;
+namespace Belin.Sql.Cmdlets;
 
 using System.Data;
 
@@ -7,7 +7,7 @@ using System.Data;
 /// </summary>
 [Cmdlet(VerbsCommon.New, "Parameter")]
 [OutputType(typeof(IDbDataParameter))]
-public class NewParameter: Cmdlet {
+public class NewParameterCommand: Cmdlet {
 
 	/// <summary>
 	/// A command connected to a data source.
@@ -16,13 +16,13 @@ public class NewParameter: Cmdlet {
 	public required IDbCommand Command { get; set; }
 
 	/// <summary>
-	/// A command connected to a data source.
+	/// The parameter name.
 	/// </summary>
 	[Parameter(Mandatory = true, Position = 1)]
 	public required string Name { get; set; }
 
 	/// <summary>
-	/// A command connected to a data source.
+	/// The parameter value.
 	/// </summary>
 	[Parameter(Mandatory = true, Position = 2), AllowNull]
 	public required object? Value { get; set; }
@@ -30,10 +30,5 @@ public class NewParameter: Cmdlet {
 	/// <summary>
 	/// Performs execution of this command.
 	/// </summary>
-	protected override void ProcessRecord() {
-		var parameter = Command.CreateParameter();
-		parameter.ParameterName = Name;
-		parameter.Value = Value ?? DBNull.Value;
-		WriteObject(parameter);
-	}
+	protected override void ProcessRecord() => WriteObject(Command.CreateParameter(Name, Value));
 }

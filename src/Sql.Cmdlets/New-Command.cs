@@ -1,21 +1,14 @@
-namespace Belin.Sql;
+namespace Belin.Sql.Cmdlets;
 
-using Belin.Sql.Mapping;
 using System.Collections;
 using System.Data;
 
 /// <summary>
-/// Executes a parameterized SQL query and returns the single row.
+/// Creates a new command associated with the specified connection.
 /// </summary>
-[Cmdlet(VerbsCommon.Get, "Single")]
-[OutputType(typeof(object))]
-public class GetSingle: Cmdlet {
-
-	/// <summary>
-	/// The type of objects to return.
-	/// </summary>
-	[Parameter]
-	public Type? As { get; set; }
+[Cmdlet(VerbsCommon.New, "Command")]
+[OutputType(typeof(IDbCommand))]
+public class NewCommandCommand: Cmdlet {
 
 	/// <summary>
 	/// The SQL query to be executed.
@@ -51,24 +44,20 @@ public class GetSingle: Cmdlet {
 	/// Performs execution of this command.
 	/// </summary>
 	protected override void ProcessRecord() {
-		var adapter =
-			new InvokeReader { Command = Command, Connection = Connection, Parameters = Parameters, PositionalParameters = PositionalParameters, Timeout = Timeout }
-			.Invoke<DataAdapter>()
-			.Single();
+		var command = Connection.CreateCommand();
+		command.CommandText = Command;
+		command.CommandTimeout = Timeout;
 
-		object? record = null;
-		var rowCount = 0;
-		while (adapter.Reader.Read()) {
-			if (++rowCount > 1) break;
-			record = adapter.Mapper.CreateInstance(As ?? typeof(PSObject), adapter.Reader);
+		if (PositionalParameters is not null) for (var index = 0; index < PositionalParameters.Length; index++) {
+			var parameters = new NewParameterCommand { Command = command, Name = $"QuestionMark{index}", Value = PositionalParameters[index] };
+			command.Parameters.Add(parameters.Invoke<IDbDataParameter>().Single());
 		}
 
-		adapter.Reader.Close();
-		if (rowCount != 1) {
-			var exception = new InvalidOperationException("The record set is empty or contains more than one record.");
-			WriteError(new ErrorRecord(exception, "InvalidRecordSet", ErrorCategory.InvalidOperation, null));
+		if (Parameters is not null) foreach (var key in Parameters.Keys) {
+			var parameters = new NewParameterCommand { Command = command, Name = $"@{key}", Value = Parameters[key] };
+			command.Parameters.Add(parameters.Invoke<IDbDataParameter>().Single());
 		}
 
-		WriteObject(rowCount == 1 ? record : null);
+		WriteObject(command);
 	}
 }

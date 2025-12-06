@@ -1,7 +1,6 @@
-namespace Belin.Sql;
+namespace Belin.Sql.Cmdlets;
 
 using System.Data;
-using System.Data.Common;
 using System.Text.RegularExpressions;
 
 /// <summary>
@@ -9,7 +8,7 @@ using System.Text.RegularExpressions;
 /// </summary>
 [Cmdlet(VerbsCommon.Get, "Version")]
 [OutputType(typeof(Version))]
-public partial class GetVersion: Cmdlet {
+public partial class GetVersionCommand: Cmdlet {
 
 	/// <summary>
 	/// Gets the regular expression used to parse the server version.
@@ -41,7 +40,7 @@ public partial class GetVersion: Cmdlet {
 	/// Performs execution of this command.
 	/// </summary>
 	protected override void ProcessRecord() {
-		var version = Command is not string command ? null : new GetScalar { Connection = Connection, Command = command }
+		var version = Command is not string command ? null : new GetScalarCommand { Connection = Connection, Command = command }
 			.Invoke<string?>()
 			.Single();
 

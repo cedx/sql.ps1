@@ -1,4 +1,4 @@
-namespace Belin.Sql;
+namespace Belin.Sql.Cmdlets;
 
 using System.Data;
 
@@ -7,7 +7,7 @@ using System.Data;
 /// </summary>
 [Cmdlet(VerbsCommon.New, "Connection")]
 [OutputType(typeof(IDbConnection))]
-public class NewConnection: Cmdlet {
+public class NewConnectionCommand: Cmdlet {
 
 	/// <summary>
 	/// The connection string used to open the database.

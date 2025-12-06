@@ -1,7 +1,8 @@
 # Changelog
 
 ## Version [0.8.0](https://github.com/cedx/sql.net/compare/v0.7.0...v0.8.0)
-- Added the `Belin.Sql.Dappeer` assembly providing some type maps and type handlers.
+- Added the `Belin.Sql` assembly providing the data mapping feature.
+- Added the `Belin.Sql.Dapper` assembly providing some type maps and type handlers.
 - Moved the cmdlets to the `Belin.Sql.Cmdlets` assembly.
 
 ## Version [0.7.0](https://github.com/cedx/sql.net/compare/v0.6.0...v0.7.0)

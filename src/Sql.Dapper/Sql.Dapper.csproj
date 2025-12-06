@@ -4,7 +4,7 @@
 		<Copyright>© Cédric Belin</Copyright>
 		<Description>A simple micro-ORM, based on ADO.NET and data annotations.</Description>
 		<Product>SQL Mapper for .NET</Product>
-		<Version>0.1.0</Version>
+		<Version>0.8.0</Version>
 	</PropertyGroup>
 
 	<PropertyGroup>

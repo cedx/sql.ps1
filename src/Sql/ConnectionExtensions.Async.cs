@@ -197,6 +197,19 @@ public static partial class ConnectionExtensions {
 	/// <returns>The sequence of objects whose properties correspond to the columns.</returns>
 	public static Task<IEnumerable<T>> QueryAsync<T>(this DbConnection connection, string command, IList<object?> parameters, QueryOptions? options = null, CancellationToken cancellationToken = default) where T: class, new() =>
 		QueryAsync<T>(connection, command, (parameters ?? []).ToOrderedDictionary(), options, cancellationToken);
+		
+	/// <summary>
+	/// Executes a parameterized SQL query and returns the first row.
+	/// </summary>
+	/// <typeparam name="T">The type of objects to return.</typeparam>
+	/// <param name="connection">The connection to the data source.</param>
+	/// <param name="command">The SQL query to be executed.</param>
+	/// <param name="options">The query options.</param>
+	/// <param name="cancellationToken">The token to cancel the operation.</param>
+	/// <returns>The first row.</returns>
+	/// <exception cref="InvalidOperationException">The result set is empty.</exception>
+	public static Task<T> QueryFirstAsync<T>(this DbConnection connection, string command, QueryOptions? options = null, CancellationToken cancellationToken = default) where T: class, new() =>
+		QueryFirstAsync<T>(connection, command, new Dictionary<string, object?>(), options, cancellationToken);
 
 	/// <summary>
 	/// Executes a parameterized SQL query and returns the first row.

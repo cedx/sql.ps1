@@ -6,7 +6,7 @@ using System.Data;
 /// <summary>
 /// Executes a parameterized SQL query that selects a single value.
 /// </summary>
-[Cmdlet(VerbsCommon.Get, "Scalar", DefaultParameterSetName = "Parameters")]
+[Cmdlet(VerbsCommon.Get, "Scalar", DefaultParameterSetName = nameof(Parameters))]
 [OutputType(typeof(object))]
 public class GetScalarCommand: PSCmdlet {
 
@@ -31,13 +31,13 @@ public class GetScalarCommand: PSCmdlet {
 	/// <summary>
 	/// The named parameters of the SQL query.
 	/// </summary>
-	[Parameter(ParameterSetName = "Parameters", Position = 2)]
+	[Parameter(ParameterSetName = nameof(Parameters), Position = 2)]
 	public Hashtable Parameters { get; set; } = [];
 
 	/// <summary>
 	/// The positional parameters of the SQL query.
 	/// </summary>
-	[Parameter(ParameterSetName = "PositionalParameters")]
+	[Parameter(ParameterSetName = nameof(PositionalParameters))]
 	public object[] PositionalParameters { get; set; } = [];
 
 	/// <summary>

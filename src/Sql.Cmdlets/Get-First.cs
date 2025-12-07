@@ -7,7 +7,7 @@ using System.Dynamic;
 /// <summary>
 /// Executes a parameterized SQL query and returns the first row.
 /// </summary>
-[Cmdlet(VerbsCommon.Get, "First", DefaultParameterSetName = "Parameters")]
+[Cmdlet(VerbsCommon.Get, "First", DefaultParameterSetName = nameof(Parameters))]
 [OutputType(typeof(object))]
 public class GetFirstCommand: PSCmdlet {
 
@@ -38,13 +38,13 @@ public class GetFirstCommand: PSCmdlet {
 	/// <summary>
 	/// The named parameters of the SQL query.
 	/// </summary>
-	[Parameter(ParameterSetName = "Parameters", Position = 2)]
+	[Parameter(ParameterSetName = nameof(Parameters), Position = 2)]
 	public Hashtable Parameters { get; set; } = [];
 
 	/// <summary>
 	/// The positional parameters of the SQL query.
 	/// </summary>
-	[Parameter(ParameterSetName = "PositionalParameters")]
+	[Parameter(ParameterSetName = nameof(PositionalParameters))]
 	public object[] PositionalParameters { get; set; } = [];
 
 	/// <summary>

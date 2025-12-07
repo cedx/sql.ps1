@@ -6,7 +6,7 @@ using System.Data;
 /// <summary>
 /// Executes a parameterized SQL statement.
 /// </summary>
-[Cmdlet(VerbsLifecycle.Invoke, "NonQuery", DefaultParameterSetName = "Parameters")]
+[Cmdlet(VerbsLifecycle.Invoke, "NonQuery", DefaultParameterSetName = nameof(Parameters))]
 [OutputType(typeof(int))]
 public class InvokeNonQueryCommand: PSCmdlet {
 
@@ -31,13 +31,13 @@ public class InvokeNonQueryCommand: PSCmdlet {
 	/// <summary>
 	/// The named parameters of the SQL query.
 	/// </summary>
-	[Parameter(ParameterSetName = "Parameters", Position = 2)]
+	[Parameter(ParameterSetName = nameof(Parameters), Position = 2)]
 	public Hashtable Parameters { get; set; } = [];
 
 	/// <summary>
 	/// The positional parameters of the SQL query.
 	/// </summary>
-	[Parameter(ParameterSetName = "PositionalParameters")]
+	[Parameter(ParameterSetName = nameof(PositionalParameters))]
 	public object[] PositionalParameters { get; set; } = [];
 
 	/// <summary>

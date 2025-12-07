@@ -7,7 +7,7 @@ using System.Dynamic;
 /// <summary>
 /// Executes a parameterized SQL query and returns an array of objects whose properties correspond to the columns.
 /// </summary>
-[Cmdlet(VerbsLifecycle.Invoke, "Query", DefaultParameterSetName = "Parameters")]
+[Cmdlet(VerbsLifecycle.Invoke, "Query", DefaultParameterSetName = nameof(Parameters))]
 [OutputType(typeof(object[]))]
 public class InvokeQueryCommand: PSCmdlet {
 
@@ -38,13 +38,13 @@ public class InvokeQueryCommand: PSCmdlet {
 	/// <summary>
 	/// The named parameters of the SQL query.
 	/// </summary>
-	[Parameter(ParameterSetName = "Parameters", Position = 2)]
+	[Parameter(ParameterSetName = nameof(Parameters), Position = 2)]
 	public Hashtable Parameters { get; set; } = [];
 
 	/// <summary>
 	/// The positional parameters of the SQL query.
 	/// </summary>
-	[Parameter(ParameterSetName = "PositionalParameters")]
+	[Parameter(ParameterSetName = nameof(PositionalParameters))]
 	public object[] PositionalParameters { get; set; } = [];
 
 	/// <summary>

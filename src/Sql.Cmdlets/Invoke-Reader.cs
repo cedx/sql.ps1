@@ -6,7 +6,7 @@ using System.Data;
 /// <summary>
 /// Executes a parameterized SQL query and returns a data reader.
 /// </summary>
-[Cmdlet(VerbsLifecycle.Invoke, "Reader", DefaultParameterSetName = "Parameters")]
+[Cmdlet(VerbsLifecycle.Invoke, "Reader", DefaultParameterSetName = nameof(Parameters))]
 [OutputType(typeof(DataAdapter))]
 public class InvokeReaderCommand: PSCmdlet {
 
@@ -31,13 +31,13 @@ public class InvokeReaderCommand: PSCmdlet {
 	/// <summary>
 	/// The named parameters of the SQL query.
 	/// </summary>
-	[Parameter(ParameterSetName = "Parameters", Position = 2)]
+	[Parameter(ParameterSetName = nameof(Parameters), Position = 2)]
 	public Hashtable Parameters { get; set; } = [];
 
 	/// <summary>
 	/// The positional parameters of the SQL query.
 	/// </summary>
-	[Parameter(ParameterSetName = "PositionalParameters")]
+	[Parameter(ParameterSetName = nameof(PositionalParameters))]
 	public object[] PositionalParameters { get; set; } = [];
 
 	/// <summary>

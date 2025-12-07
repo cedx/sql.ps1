@@ -99,7 +99,8 @@ public static partial class ConnectionExtensions {
 	public static object? ExecuteScalar(this IDbConnection connection, string command, IDictionary<string, object?> parameters, QueryOptions? options = null) {
 		if (connection.State == ConnectionState.Closed) connection.Open();
 		using var dbCommand = CreateCommand(connection, command, parameters, options);
-		return dbCommand.ExecuteScalar();
+		var value = dbCommand.ExecuteScalar();
+		return value is DBNull ? null : value;
 	}
 
 	/// <summary>

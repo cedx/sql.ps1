@@ -108,7 +108,8 @@ public static partial class ConnectionExtensions {
 	public static async Task<object?> ExecuteScalarAsync(this DbConnection connection, string command, IDictionary<string, object?> parameters, QueryOptions? options = null, CancellationToken cancellationToken = default) {
 		if (connection.State == ConnectionState.Closed) await connection.OpenAsync(cancellationToken);
 		using var dbCommand = (DbCommand) CreateCommand(connection, command, parameters, options);
-		return await dbCommand.ExecuteScalarAsync(cancellationToken);
+		var value = await dbCommand.ExecuteScalarAsync(cancellationToken);
+		return value is DBNull ? null : value;
 	}
 
 	/// <summary>

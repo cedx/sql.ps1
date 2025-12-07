@@ -28,8 +28,7 @@ public static partial class ConnectionExtensions {
 		command.CommandType = options?.Type ?? CommandType.Text;
 
 		if (parameters is not null)
-			foreach (var (key, value) in parameters)
-				command.Parameters.Add(command.CreateParameter($"@{key}", value ?? DBNull.Value));
+			foreach (var (key, value) in parameters) command.Parameters.Add(command.CreateParameter($"@{key}", value));
 
 		return command;
 	}

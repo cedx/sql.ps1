@@ -50,12 +50,10 @@ public class GetScalarCommand: PSCmdlet {
 	/// Performs execution of this command.
 	/// </summary>
 	protected override void ProcessRecord() {
-		using var command =
-			new NewCommandCommand { Command = Command, Connection = Connection, Parameters = Parameters, PositionalParameters = PositionalParameters, Timeout = Timeout }
-			.Invoke<IDbCommand>()
-			.Single();
+		IDictionary<string, object?> parameters = ParameterSetName == nameof(PositionalParameters)
+			? PositionalParameters.ToOrderedDictionary()
+			: Parameters.Cast<DictionaryEntry>().ToDictionary(entry => entry.Key.ToString()!, entry => entry.Value);
 
-		var value = command.ExecuteScalar();
-		WriteObject(value is DBNull ? null : value);
+		WriteObject(Connection.ExecuteScalar(Command, parameters, new(Timeout: Timeout, Type: CommandType)));
 	}
 }

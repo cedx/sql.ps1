@@ -119,6 +119,17 @@ public static partial class ConnectionExtensions {
 	/// <typeparam name="T">The type of object to return.</typeparam>
 	/// <param name="connection">The connection to the data source.</param>
 	/// <param name="command">The SQL query to be executed.</param>
+	/// <param name="options">The query options.</param>
+	/// <returns>The first column of the first row.</returns>
+	public static T? ExecuteScalar<T>(this IDbConnection connection, string command, QueryOptions? options = null) where T: IConvertible =>
+		ExecuteScalar<T>(connection, command, new Dictionary<string, object?>(), options);
+
+	/// <summary>
+	/// Executes a parameterized SQL query that selects a single value.
+	/// </summary>
+	/// <typeparam name="T">The type of object to return.</typeparam>
+	/// <param name="connection">The connection to the data source.</param>
+	/// <param name="command">The SQL query to be executed.</param>
 	/// <param name="parameters">The named parameters of the SQL query.</param>
 	/// <param name="options">The query options.</param>
 	/// <returns>The first column of the first row.</returns>
@@ -135,7 +146,7 @@ public static partial class ConnectionExtensions {
 	/// <param name="options">The query options.</param>
 	/// <returns>The first column of the first row.</returns>
 	public static T? ExecuteScalar<T>(this IDbConnection connection, string command, IList<object?> parameters, QueryOptions? options = null) where T: IConvertible =>
-		(T?) Convert.ChangeType(ExecuteScalar(connection, command, parameters, options), typeof(T), CultureInfo.InvariantCulture);
+		ExecuteScalar<T>(connection, command, (parameters ?? []).ToOrderedDictionary(), options);
 
 	/// <summary>
 	/// Executes a parameterized SQL query and returns a sequence of objects whose properties correspond to the columns.

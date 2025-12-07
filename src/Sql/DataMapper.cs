@@ -10,7 +10,7 @@ using System.Reflection;
 /// <summary>
 /// Maps data records to entity objects.
 /// </summary>
-public class DataMapper {
+public sealed class DataMapper {
 
 	/// <summary>
 	/// The property maps, keyed by type.

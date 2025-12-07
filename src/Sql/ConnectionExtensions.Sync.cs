@@ -41,7 +41,7 @@ public static partial class ConnectionExtensions {
 	/// <param name="options">The query options.</param>
 	/// <returns>The number of rows affected.</returns>
 	public static int Execute(this IDbConnection connection, string command, IList<object?> parameters, QueryOptions? options = null) =>
-		Execute(connection, command, (parameters ?? []).ToOrderedDictionary(), options);
+		Execute(connection, command, parameters.ToOrderedDictionary(), options);
 
 	/// <summary>
 	/// Executes a parameterized SQL query and returns a data reader.
@@ -76,7 +76,7 @@ public static partial class ConnectionExtensions {
 	/// <param name="options">The query options.</param>
 	/// <returns>The data reader that can be used to access the results.</returns>
 	public static IDataReader ExecuteReader(this IDbConnection connection, string command, IList<object?> parameters, QueryOptions? options = null) =>
-		ExecuteReader(connection, command, (parameters ?? []).ToOrderedDictionary(), options);
+		ExecuteReader(connection, command, parameters.ToOrderedDictionary(), options);
 
 	/// <summary>
 	/// Executes a parameterized SQL query that selects a single value.
@@ -111,7 +111,7 @@ public static partial class ConnectionExtensions {
 	/// <param name="options">The query options.</param>
 	/// <returns>The first column of the first row.</returns>
 	public static object? ExecuteScalar(this IDbConnection connection, string command, IList<object?> parameters, QueryOptions? options = null) =>
-		ExecuteScalar(connection, command, (parameters ?? []).ToOrderedDictionary(), options);
+		ExecuteScalar(connection, command, parameters.ToOrderedDictionary(), options);
 
 	/// <summary>
 	/// Executes a parameterized SQL query that selects a single value.
@@ -146,7 +146,7 @@ public static partial class ConnectionExtensions {
 	/// <param name="options">The query options.</param>
 	/// <returns>The first column of the first row.</returns>
 	public static T? ExecuteScalar<T>(this IDbConnection connection, string command, IList<object?> parameters, QueryOptions? options = null) where T: IConvertible =>
-		ExecuteScalar<T>(connection, command, (parameters ?? []).ToOrderedDictionary(), options);
+		ExecuteScalar<T>(connection, command, parameters.ToOrderedDictionary(), options);
 
 	/// <summary>
 	/// Executes a parameterized SQL query and returns a sequence of objects whose properties correspond to the columns.
@@ -183,7 +183,7 @@ public static partial class ConnectionExtensions {
 	/// <param name="options">The query options.</param>
 	/// <returns>The sequence of objects whose properties correspond to the columns.</returns>
 	public static IEnumerable<T> Query<T>(this IDbConnection connection, string command, IList<object?> parameters, QueryOptions? options = null) where T: class, new() =>
-		Query<T>(connection, command, (parameters ?? []).ToOrderedDictionary(), options);
+		Query<T>(connection, command, parameters.ToOrderedDictionary(), options);
 
 	/// <summary>
 	/// Executes a parameterized SQL query and returns the first row.
@@ -221,7 +221,7 @@ public static partial class ConnectionExtensions {
 	/// <param name="options">The query options.</param>
 	/// <returns>The first row.</returns>
 	public static T QueryFirst<T>(this IDbConnection connection, string command, IList<object?> parameters, QueryOptions? options = null) where T: class, new() =>
-		QueryFirst<T>(connection, command, (parameters ?? []).ToOrderedDictionary(), options);
+		QueryFirst<T>(connection, command, parameters.ToOrderedDictionary(), options);
 	
 	/// <summary>
 	/// Executes a parameterized SQL query and returns the first row.
@@ -258,7 +258,7 @@ public static partial class ConnectionExtensions {
 	/// <param name="options">The query options.</param>
 	/// <returns>The first row, or <see langword="null"/> if not found.</returns>
 	public static T? QueryFirstOrDefault<T>(this IDbConnection connection, string command, IList<object?> parameters, QueryOptions? options = null) where T: class, new() =>
-		QueryFirstOrDefault<T>(connection, command, (parameters ?? []).ToOrderedDictionary(), options);
+		QueryFirstOrDefault<T>(connection, command, parameters.ToOrderedDictionary(), options);
 
 	/// <summary>
 	/// Executes a parameterized SQL query and returns the single row.
@@ -304,7 +304,7 @@ public static partial class ConnectionExtensions {
 	/// <param name="options">The query options.</param>
 	/// <returns>The single row.</returns>
 	public static T QuerySingle<T>(this IDbConnection connection, string command, IList<object?> parameters, QueryOptions? options = null) where T: class, new() =>
-		QuerySingle<T>(connection, command, (parameters ?? []).ToOrderedDictionary(), options);
+		QuerySingle<T>(connection, command, parameters.ToOrderedDictionary(), options);
 
 	/// <summary>
 	/// Executes a parameterized SQL query and returns the single row.
@@ -349,5 +349,5 @@ public static partial class ConnectionExtensions {
 	/// <param name="options">The query options.</param>
 	/// <returns>The single row, or <see langword="null"/> if not found.</returns>
 	public static T? QuerySingleOrDefault<T>(this IDbConnection connection, string command, IList<object?> parameters, QueryOptions? options = null) where T: class, new() =>
-		QuerySingleOrDefault<T>(connection, command, (parameters ?? []).ToOrderedDictionary(), options);
+		QuerySingleOrDefault<T>(connection, command, parameters.ToOrderedDictionary(), options);
 }

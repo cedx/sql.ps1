@@ -45,7 +45,7 @@ public static partial class ConnectionExtensions {
 	/// <param name="cancellationToken">The token to cancel the operation.</param>
 	/// <returns>The number of rows affected.</returns>
 	public static Task<int> ExecuteAsync(this DbConnection connection, string command, IList<object?> parameters, QueryOptions? options = null, CancellationToken cancellationToken = default) =>
-		ExecuteAsync(connection, command, (parameters ?? []).ToOrderedDictionary(), options, cancellationToken);
+		ExecuteAsync(connection, command, parameters.ToOrderedDictionary(), options, cancellationToken);
 
 	/// <summary>
 	/// Executes a parameterized SQL query and returns a data reader.
@@ -83,7 +83,7 @@ public static partial class ConnectionExtensions {
 	/// <param name="cancellationToken">The token to cancel the operation.</param>
 	/// <returns>The data reader that can be used to access the results.</returns>
 	public static Task<IDataReader> ExecuteReaderAsync(this DbConnection connection, string command, IList<object?> parameters, QueryOptions? options = null, CancellationToken cancellationToken = default) =>
-		ExecuteReaderAsync(connection, command, (parameters ?? []).ToOrderedDictionary(), options, cancellationToken);
+		ExecuteReaderAsync(connection, command, parameters.ToOrderedDictionary(), options, cancellationToken);
 
 	/// <summary>
 	/// Executes a parameterized SQL query that selects a single value.
@@ -121,7 +121,7 @@ public static partial class ConnectionExtensions {
 	/// <param name="cancellationToken">The token to cancel the operation.</param>
 	/// <returns>The first column of the first row.</returns>
 	public static Task<object?> ExecuteScalarAsync(this DbConnection connection, string command, IList<object?> parameters, QueryOptions? options = null, CancellationToken cancellationToken = default) =>
-		ExecuteScalarAsync(connection, command, (parameters ?? []).ToOrderedDictionary(), options, cancellationToken);
+		ExecuteScalarAsync(connection, command, parameters.ToOrderedDictionary(), options, cancellationToken);
 
 	/// <summary>
 	/// Executes a parameterized SQL query that selects a single value.
@@ -156,7 +156,7 @@ public static partial class ConnectionExtensions {
 	/// <param name="options">The query options.</param>
 	/// <returns>The first column of the first row.</returns>
 	public static Task<T?> ExecuteScalarAsync<T>(this DbConnection connection, string command, IList<object?> parameters, QueryOptions? options = null) where T: IConvertible =>
-		ExecuteScalarAsync<T>(connection, command, (parameters ?? []).ToOrderedDictionary(), options);
+		ExecuteScalarAsync<T>(connection, command, parameters.ToOrderedDictionary(), options);
 
 	/// <summary>
 	/// Executes a parameterized SQL query and returns a sequence of objects whose properties correspond to the columns.
@@ -196,7 +196,7 @@ public static partial class ConnectionExtensions {
 	/// <param name="cancellationToken">The token to cancel the operation.</param>
 	/// <returns>The sequence of objects whose properties correspond to the columns.</returns>
 	public static Task<IEnumerable<T>> QueryAsync<T>(this DbConnection connection, string command, IList<object?> parameters, QueryOptions? options = null, CancellationToken cancellationToken = default) where T: class, new() =>
-		QueryAsync<T>(connection, command, (parameters ?? []).ToOrderedDictionary(), options, cancellationToken);
+		QueryAsync<T>(connection, command, parameters.ToOrderedDictionary(), options, cancellationToken);
 
 	/// <summary>
 	/// Executes a parameterized SQL query and returns the first row.
@@ -237,7 +237,7 @@ public static partial class ConnectionExtensions {
 	/// <param name="cancellationToken">The token to cancel the operation.</param>
 	/// <returns>The first row.</returns>
 	public static Task<T> QueryFirstAsync<T>(this DbConnection connection, string command, IList<object?> parameters, QueryOptions? options = null, CancellationToken cancellationToken = default) where T: class, new() =>
-		QueryFirstAsync<T>(connection, command, (parameters ?? []).ToOrderedDictionary(), options, cancellationToken);
+		QueryFirstAsync<T>(connection, command, parameters.ToOrderedDictionary(), options, cancellationToken);
 
 	/// <summary>
 	/// Executes a parameterized SQL query and returns the first row.
@@ -277,7 +277,7 @@ public static partial class ConnectionExtensions {
 	/// <param name="cancellationToken">The token to cancel the operation.</param>
 	/// <returns>The first row, or <see langword="null"/> if not found.</returns>
 	public static Task<T?> QueryFirstOrDefaultAsync<T>(this DbConnection connection, string command, IList<object?> parameters, QueryOptions? options = null, CancellationToken cancellationToken = default) where T: class, new() =>
-		QueryFirstOrDefaultAsync<T>(connection, command, (parameters ?? []).ToOrderedDictionary(), options, cancellationToken);
+		QueryFirstOrDefaultAsync<T>(connection, command, parameters.ToOrderedDictionary(), options, cancellationToken);
 
 	/// <summary>
 	/// Executes a parameterized SQL query and returns the single row.
@@ -326,7 +326,7 @@ public static partial class ConnectionExtensions {
 	/// <param name="cancellationToken">The token to cancel the operation.</param>
 	/// <returns>The single row.</returns>
 	public static Task<T> QuerySingleAsync<T>(this DbConnection connection, string command, IList<object?> parameters, QueryOptions? options = null, CancellationToken cancellationToken = default) where T: class, new() =>
-		QuerySingleAsync<T>(connection, command, (parameters ?? []).ToOrderedDictionary(), options, cancellationToken);
+		QuerySingleAsync<T>(connection, command, parameters.ToOrderedDictionary(), options, cancellationToken);
 	
 	/// <summary>
 	/// Executes a parameterized SQL query and returns the single row.
@@ -374,5 +374,5 @@ public static partial class ConnectionExtensions {
 	/// <param name="cancellationToken">The token to cancel the operation.</param>
 	/// <returns>The single row, or <see langword="null"/> if not found.</returns>
 	public static Task<T?> QuerySingleOrDefaultAsync<T>(this DbConnection connection, string command, IList<object?> parameters, QueryOptions? options = null, CancellationToken cancellationToken = default) where T: class, new() =>
-		QuerySingleOrDefaultAsync<T>(connection, command, (parameters ?? []).ToOrderedDictionary(), options, cancellationToken);
+		QuerySingleOrDefaultAsync<T>(connection, command, parameters.ToOrderedDictionary(), options, cancellationToken);
 }

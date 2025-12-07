@@ -38,6 +38,6 @@ public static partial class ConnectionExtensions {
 	/// </summary>
 	/// <param name="list">The list to convert.</param>
 	/// <returns>The ordered dictionary corresponding to the specified list.</returns>
-	private static OrderedDictionary<string, object?> ToOrderedDictionary(IList<object?> list) =>
-		new(list.Index().Select((index, value) => new KeyValuePair<string, object?>($"QuestionMark{index}", value)));
+	private static OrderedDictionary<string, T> ToOrderedDictionary<T>(IList<T> list) =>
+		new(list.Index().Select(tuple => new KeyValuePair<string, T>($"QuestionMark{tuple.Index}", tuple.Item)));
 }

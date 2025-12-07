@@ -30,7 +30,7 @@ public static partial class ConnectionExtensions {
 	/// <param name="options">The query options.</param>
 	/// <returns>The number of rows affected.</returns>
 	public static int Execute(this IDbConnection connection, string command, IList<object?>? parameters = null, QueryOptions? options = null) =>
-		Execute(connection, command, ToOrderedDictionary(parameters ?? []), options);
+		Execute(connection, command, (parameters ?? []).ToOrderedDictionary(), options);
 
 	/// <summary>
 	/// Executes a parameterized SQL query and returns a data reader.
@@ -55,7 +55,7 @@ public static partial class ConnectionExtensions {
 	/// <param name="options">The query options.</param>
 	/// <returns>The data reader that can be used to access the results.</returns>
 	public static IDataReader ExecuteReader(this IDbConnection connection, string command, IList<object?>? parameters = null, QueryOptions? options = null) =>
-		ExecuteReader(connection, command, ToOrderedDictionary(parameters ?? []), options);
+		ExecuteReader(connection, command, (parameters ?? []).ToOrderedDictionary(), options);
 
 	/// <summary>
 	/// Executes a parameterized SQL query that selects a single value.
@@ -91,7 +91,7 @@ public static partial class ConnectionExtensions {
 	/// <param name="parameters">The named parameters of the SQL query.</param>
 	/// <param name="options">The query options.</param>
 	/// <returns>The sequence of objects whose properties correspond to the columns.</returns>
-	public static IEnumerable<T> Query<T>(this IDbConnection connection, string command, IDictionary<string, object?>? parameters = null, QueryOptions? options = null) {
+	public static IEnumerable<T> Query<T>(this IDbConnection connection, string command, IDictionary<string, object?>? parameters = null, QueryOptions? options = null) where T: class, new() {
 		using var reader = ExecuteReader(connection, command, parameters, options);
 		return Mapper.CreateInstances<T>(reader);
 	}
@@ -105,8 +105,8 @@ public static partial class ConnectionExtensions {
 	/// <param name="parameters">The positional parameters of the SQL query.</param>
 	/// <param name="options">The query options.</param>
 	/// <returns>The sequence of objects whose properties correspond to the columns.</returns>
-	public static IEnumerable<T> Query<T>(this IDbConnection connection, string command, IList<object?>? parameters = null, QueryOptions? options = null) =>
-		Query<T>(connection, command, ToOrderedDictionary(parameters ?? []), options);
+	public static IEnumerable<T> Query<T>(this IDbConnection connection, string command, IList<object?>? parameters = null, QueryOptions? options = null) where T: class, new() =>
+		Query<T>(connection, command, (parameters ?? []).ToOrderedDictionary(), options);
 
 	/// <summary>
 	/// Executes a parameterized SQL query and returns the first row.
@@ -118,7 +118,7 @@ public static partial class ConnectionExtensions {
 	/// <param name="options">The query options.</param>
 	/// <returns>The first row.</returns>
 	/// <exception cref="InvalidOperationException">The result set is empty.</exception>
-	public static T QueryFirst<T>(this IDbConnection connection, string command, IDictionary<string, object?>? parameters = null, QueryOptions? options = null) {
+	public static T QueryFirst<T>(this IDbConnection connection, string command, IDictionary<string, object?>? parameters = null, QueryOptions? options = null) where T: class, new() {
 		using var reader = ExecuteReader(connection, command, parameters, options);
 		return reader.Read() ? Mapper.CreateInstance<T>(reader) : throw new InvalidOperationException("The result set is empty.");
 	}
@@ -133,8 +133,8 @@ public static partial class ConnectionExtensions {
 	/// <param name="options">The query options.</param>
 	/// <returns>The first row.</returns>
 	/// <exception cref="InvalidOperationException">The result set is empty.</exception>
-	public static T QueryFirst<T>(this IDbConnection connection, string command, IList<object?>? parameters = null, QueryOptions? options = null) =>
-		QueryFirst<T>(connection, command, ToOrderedDictionary(parameters ?? []), options);
+	public static T QueryFirst<T>(this IDbConnection connection, string command, IList<object?>? parameters = null, QueryOptions? options = null) where T: class, new() =>
+		QueryFirst<T>(connection, command, (parameters ?? []).ToOrderedDictionary(), options);
 
 	/// <summary>
 	/// Executes a parameterized SQL query and returns the first row.
@@ -145,7 +145,7 @@ public static partial class ConnectionExtensions {
 	/// <param name="parameters">The named parameters of the SQL query.</param>
 	/// <param name="options">The query options.</param>
 	/// <returns>The first row, or <see langword="null"/> if not found.</returns>
-	public static T? QueryFirstOrDefault<T>(this IDbConnection connection, string command, IDictionary<string, object?>? parameters = null, QueryOptions? options = null) {
+	public static T? QueryFirstOrDefault<T>(this IDbConnection connection, string command, IDictionary<string, object?>? parameters = null, QueryOptions? options = null) where T: class, new() {
 		using var reader = ExecuteReader(connection, command, parameters, options);
 		return reader.Read() ? Mapper.CreateInstance<T>(reader) : default;
 	}
@@ -159,8 +159,8 @@ public static partial class ConnectionExtensions {
 	/// <param name="parameters">The positional parameters of the SQL query.</param>
 	/// <param name="options">The query options.</param>
 	/// <returns>The first row, or <see langword="null"/> if not found.</returns>
-	public static T? QueryFirstOrDefault<T>(this IDbConnection connection, string command, IList<object?>? parameters = null, QueryOptions? options = null) =>
-		QueryFirstOrDefault<T>(connection, command, ToOrderedDictionary(parameters ?? []), options);
+	public static T? QueryFirstOrDefault<T>(this IDbConnection connection, string command, IList<object?>? parameters = null, QueryOptions? options = null) where T: class, new() =>
+		QueryFirstOrDefault<T>(connection, command, (parameters ?? []).ToOrderedDictionary(), options);
 
 	/// <summary>
 	/// Executes a parameterized SQL query and returns the single row.
@@ -172,7 +172,7 @@ public static partial class ConnectionExtensions {
 	/// <param name="options">The query options.</param>
 	/// <returns>The single row.</returns>
 	/// <exception cref="InvalidOperationException">The result set is empty or contains more than one record.</exception>
-	public static T QuerySingle<T>(this IDbConnection connection, string command, IDictionary<string, object?>? parameters = null, QueryOptions? options = null) {
+	public static T QuerySingle<T>(this IDbConnection connection, string command, IDictionary<string, object?>? parameters = null, QueryOptions? options = null) where T: class, new() {
 		T? record = default;
 		var rowCount = 0;
 
@@ -195,8 +195,8 @@ public static partial class ConnectionExtensions {
 	/// <param name="options">The query options.</param>
 	/// <returns>The single row.</returns>
 	/// <exception cref="InvalidOperationException">The result set is empty or contains more than one record.</exception>
-	public static T QuerySingle<T>(this IDbConnection connection, string command, IList<object?>? parameters = null, QueryOptions? options = null) =>
-		QuerySingle<T>(connection, command, ToOrderedDictionary(parameters ?? []), options);
+	public static T QuerySingle<T>(this IDbConnection connection, string command, IList<object?>? parameters = null, QueryOptions? options = null) where T: class, new() =>
+		QuerySingle<T>(connection, command, (parameters ?? []).ToOrderedDictionary(), options);
 
 	/// <summary>
 	/// Executes a parameterized SQL query and returns the single row.
@@ -207,7 +207,7 @@ public static partial class ConnectionExtensions {
 	/// <param name="parameters">The named parameters of the SQL query.</param>
 	/// <param name="options">The query options.</param>
 	/// <returns>The single row, or <see langword="null"/> if not found.</returns>
-	public static T? QuerySingleOrDefault<T>(this IDbConnection connection, string command, IDictionary<string, object?>? parameters = null, QueryOptions? options = null) {
+	public static T? QuerySingleOrDefault<T>(this IDbConnection connection, string command, IDictionary<string, object?>? parameters = null, QueryOptions? options = null) where T: class, new() {
 		T? record = default;
 		var rowCount = 0;
 
@@ -229,6 +229,6 @@ public static partial class ConnectionExtensions {
 	/// <param name="parameters">The positional parameters of the SQL query.</param>
 	/// <param name="options">The query options.</param>
 	/// <returns>The single row, or <see langword="null"/> if not found.</returns>
-	public static T? QuerySingleOrDefault<T>(this IDbConnection connection, string command, IList<object?>? parameters = null, QueryOptions? options = null) =>
-		QuerySingleOrDefault<T>(connection, command, ToOrderedDictionary(parameters ?? []), options);
+	public static T? QuerySingleOrDefault<T>(this IDbConnection connection, string command, IList<object?>? parameters = null, QueryOptions? options = null) where T: class, new() =>
+		QuerySingleOrDefault<T>(connection, command, (parameters ?? []).ToOrderedDictionary(), options);
 }

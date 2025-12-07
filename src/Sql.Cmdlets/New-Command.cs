@@ -15,6 +15,12 @@ public class NewCommandCommand: PSCmdlet {
 	/// </summary>
 	[Parameter(Mandatory = true, Position = 1)]
 	public required string Command { get; set; }
+	
+	/// <summary>
+	/// Value indicating how the command is interpreted.
+	/// </summary>
+	[Parameter]
+	public CommandType CommandType { get; set; } = CommandType.Text;
 
 	/// <summary>
 	/// The connection to the data source.
@@ -41,12 +47,6 @@ public class NewCommandCommand: PSCmdlet {
 	public int Timeout { get; set; } = 30;
 
 	/// <summary>
-	/// Value indicating how the command is interpreted.
-	/// </summary>
-	[Parameter]
-	public CommandType Type { get; set; } = CommandType.Text;
-
-	/// <summary>
 	/// Performs execution of this command.
 	/// </summary>
 	protected override void ProcessRecord() {
@@ -54,6 +54,6 @@ public class NewCommandCommand: PSCmdlet {
 			? PositionalParameters.ToOrderedDictionary()
 			: Parameters.Cast<DictionaryEntry>().ToDictionary(entry => entry.Key.ToString()!, entry => entry.Value);
 
-		WriteObject(Connection.CreateCommand(Command, parameters, new(Timeout: Timeout, Type: Type)));
+		WriteObject(Connection.CreateCommand(Command, parameters, new(Timeout: Timeout, Type: CommandType)));
 	}
 }

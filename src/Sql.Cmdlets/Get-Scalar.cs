@@ -17,6 +17,12 @@ public class GetScalarCommand: PSCmdlet {
 	public required string Command { get; set; }
 
 	/// <summary>
+	/// Value indicating how the command is interpreted.
+	/// </summary>
+	[Parameter]
+	public CommandType CommandType { get; set; } = CommandType.Text;
+
+	/// <summary>
 	/// The connection to the data source.
 	/// </summary>
 	[Parameter(Mandatory = true, Position = 0)]
@@ -44,8 +50,6 @@ public class GetScalarCommand: PSCmdlet {
 	/// Performs execution of this command.
 	/// </summary>
 	protected override void ProcessRecord() {
-		if (Connection.State == ConnectionState.Closed) Connection.Open();
-
 		using var command =
 			new NewCommandCommand { Command = Command, Connection = Connection, Parameters = Parameters, PositionalParameters = PositionalParameters, Timeout = Timeout }
 			.Invoke<IDbCommand>()

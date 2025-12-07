@@ -17,6 +17,12 @@ public class InvokeReaderCommand: PSCmdlet {
 	public required string Command { get; set; }
 
 	/// <summary>
+	/// Value indicating how the command is interpreted.
+	/// </summary>
+	[Parameter]
+	public CommandType CommandType { get; set; } = CommandType.Text;
+
+	/// <summary>
 	/// The connection to the data source.
 	/// </summary>
 	[Parameter(Mandatory = true, Position = 0)]

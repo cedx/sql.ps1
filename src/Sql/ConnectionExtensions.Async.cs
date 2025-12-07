@@ -46,7 +46,7 @@ public static partial class ConnectionExtensions {
 	/// <returns>The number of rows affected.</returns>
 	public static Task<int> ExecuteAsync(this DbConnection connection, string command, IList<object?> parameters, QueryOptions? options = null, CancellationToken cancellationToken = default) =>
 		ExecuteAsync(connection, command, (parameters ?? []).ToOrderedDictionary(), options, cancellationToken);
-	
+
 	/// <summary>
 	/// Executes a parameterized SQL query and returns a data reader.
 	/// </summary>
@@ -197,7 +197,7 @@ public static partial class ConnectionExtensions {
 	/// <returns>The sequence of objects whose properties correspond to the columns.</returns>
 	public static Task<IEnumerable<T>> QueryAsync<T>(this DbConnection connection, string command, IList<object?> parameters, QueryOptions? options = null, CancellationToken cancellationToken = default) where T: class, new() =>
 		QueryAsync<T>(connection, command, (parameters ?? []).ToOrderedDictionary(), options, cancellationToken);
-		
+
 	/// <summary>
 	/// Executes a parameterized SQL query and returns the first row.
 	/// </summary>
@@ -226,7 +226,7 @@ public static partial class ConnectionExtensions {
 		using var reader = await ExecuteReaderAsync(connection, command, parameters, options, cancellationToken);
 		return reader.Read() ? Mapper.CreateInstance<T>(reader) : throw new InvalidOperationException("The result set is empty.");
 	}
-	
+
 	/// <summary>
 	/// Executes a parameterized SQL query and returns the first row.
 	/// </summary>

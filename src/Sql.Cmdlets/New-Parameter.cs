@@ -14,7 +14,7 @@ public class NewParameterCommand: Cmdlet {
 	/// </summary>
 	[Parameter(Mandatory = true, Position = 0)]
 	public required IDbCommand Command { get; set; }
-	
+
 	/// <summary>
 	/// The parameter type.
 	/// </summary>

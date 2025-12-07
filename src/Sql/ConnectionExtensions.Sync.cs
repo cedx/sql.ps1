@@ -42,7 +42,7 @@ public static partial class ConnectionExtensions {
 	/// <returns>The number of rows affected.</returns>
 	public static int Execute(this IDbConnection connection, string command, IList<object?> parameters, QueryOptions? options = null) =>
 		Execute(connection, command, (parameters ?? []).ToOrderedDictionary(), options);
-	
+
 	/// <summary>
 	/// Executes a parameterized SQL query and returns a data reader.
 	/// </summary>
@@ -184,7 +184,7 @@ public static partial class ConnectionExtensions {
 	/// <returns>The sequence of objects whose properties correspond to the columns.</returns>
 	public static IEnumerable<T> Query<T>(this IDbConnection connection, string command, IList<object?> parameters, QueryOptions? options = null) where T: class, new() =>
 		Query<T>(connection, command, (parameters ?? []).ToOrderedDictionary(), options);
-	
+
 	/// <summary>
 	/// Executes a parameterized SQL query and returns the first row.
 	/// </summary>

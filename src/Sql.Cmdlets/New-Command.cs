@@ -15,7 +15,7 @@ public class NewCommandCommand: PSCmdlet {
 	/// </summary>
 	[Parameter(Mandatory = true, Position = 1)]
 	public required string Command { get; set; }
-	
+
 	/// <summary>
 	/// Value indicating how the command is interpreted.
 	/// </summary>

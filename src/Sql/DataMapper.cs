@@ -16,7 +16,7 @@ public class DataMapper {
 	/// The property maps, keyed by type.
 	/// </summary>
 	private static readonly Dictionary<Type, Dictionary<string, PropertyInfo>> propertyMaps = [];
-	
+
 	/// <summary>
 	/// Creates a new dyamic object from the specified data record.
 	/// </summary>
@@ -75,7 +75,7 @@ public class DataMapper {
 
 		return instance;
 	}
-	
+
 	/// <summary>
 	/// Creates new dynamic objects from the specified data reader.
 	/// </summary>

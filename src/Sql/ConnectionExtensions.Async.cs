@@ -14,6 +14,17 @@ public static partial class ConnectionExtensions {
 	/// </summary>
 	/// <param name="connection">The connection to the data source.</param>
 	/// <param name="command">The SQL query to be executed.</param>
+	/// <param name="options">The query options.</param>
+	/// <param name="cancellationToken">The token to cancel the operation.</param>
+	/// <returns>The number of rows affected.</returns>
+	public static Task<int> ExecuteAsync(this DbConnection connection, string command, QueryOptions? options = null, CancellationToken cancellationToken = default) =>
+		ExecuteAsync(connection, command, new Dictionary<string, object?>(), options, cancellationToken);
+
+	/// <summary>
+	/// Executes a parameterized SQL statement.
+	/// </summary>
+	/// <param name="connection">The connection to the data source.</param>
+	/// <param name="command">The SQL query to be executed.</param>
 	/// <param name="parameters">The named parameters of the SQL query.</param>
 	/// <param name="options">The query options.</param>
 	/// <param name="cancellationToken">The token to cancel the operation.</param>

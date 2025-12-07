@@ -13,6 +13,16 @@ public static partial class ConnectionExtensions {
 	/// </summary>
 	/// <param name="connection">The connection to the data source.</param>
 	/// <param name="command">The SQL query to be executed.</param>
+	/// <param name="options">The query options.</param>
+	/// <returns>The number of rows affected.</returns>
+	public static int Execute(this IDbConnection connection, string command, QueryOptions? options = null) =>
+		Execute(connection, command, new Dictionary<string, object?>(), options);
+
+	/// <summary>
+	/// Executes a parameterized SQL statement.
+	/// </summary>
+	/// <param name="connection">The connection to the data source.</param>
+	/// <param name="command">The SQL query to be executed.</param>
 	/// <param name="parameters">The named parameters of the SQL query.</param>
 	/// <param name="options">The query options.</param>
 	/// <returns>The number of rows affected.</returns>

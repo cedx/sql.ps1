@@ -1,9 +1,10 @@
 # Changelog
 
 ## Version [0.8.0](https://github.com/cedx/sql.net/compare/v0.7.0...v0.8.0)
-- Added the `Belin.Sql` assembly providing the data mapping feature.
-- Added the `Belin.Sql.Dapper` assembly providing some type maps and type handlers.
+- Moved the data mapping to the `Belin.Sql` assembly.
 - Moved the cmdlets to the `Belin.Sql.Cmdlets` assembly.
+- Added the `Belin.Sql.Dapper` assembly providing some type maps and type handlers for [Dapper](https://www.learndapper.com).
+- Added the `-Direction` and `-Type` parameters to the `New-Parameter` cmdlet.
 
 ## Version [0.7.0](https://github.com/cedx/sql.net/compare/v0.6.0...v0.7.0)
 - Ported the cmdlets to [C#](https://learn.microsoft.com/en-us/dotnet/csharp).

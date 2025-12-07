@@ -46,6 +46,17 @@ public static partial class ConnectionExtensions {
 	/// <returns>The number of rows affected.</returns>
 	public static Task<int> ExecuteAsync(this DbConnection connection, string command, IList<object?> parameters, QueryOptions? options = null, CancellationToken cancellationToken = default) =>
 		ExecuteAsync(connection, command, (parameters ?? []).ToOrderedDictionary(), options, cancellationToken);
+	
+	/// <summary>
+	/// Executes a parameterized SQL query and returns a data reader.
+	/// </summary>
+	/// <param name="connection">The connection to the data source.</param>
+	/// <param name="command">The SQL query to be executed.</param>
+	/// <param name="options">The query options.</param>
+	/// <param name="cancellationToken">The token to cancel the operation.</param>
+	/// <returns>The data reader that can be used to access the results.</returns>
+	public static Task<IDataReader> ExecuteReaderAsync(this DbConnection connection, string command, QueryOptions? options = null, CancellationToken cancellationToken = default) =>
+		ExecuteReaderAsync(connection, command, new Dictionary<string, object?>(), options, cancellationToken);
 
 	/// <summary>
 	/// Executes a parameterized SQL query and returns a data reader.

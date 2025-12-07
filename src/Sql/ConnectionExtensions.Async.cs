@@ -207,7 +207,6 @@ public static partial class ConnectionExtensions {
 	/// <param name="options">The query options.</param>
 	/// <param name="cancellationToken">The token to cancel the operation.</param>
 	/// <returns>The first row.</returns>
-	/// <exception cref="InvalidOperationException">The result set is empty.</exception>
 	public static Task<T> QueryFirstAsync<T>(this DbConnection connection, string command, QueryOptions? options = null, CancellationToken cancellationToken = default) where T: class, new() =>
 		QueryFirstAsync<T>(connection, command, new Dictionary<string, object?>(), options, cancellationToken);
 
@@ -237,7 +236,6 @@ public static partial class ConnectionExtensions {
 	/// <param name="options">The query options.</param>
 	/// <param name="cancellationToken">The token to cancel the operation.</param>
 	/// <returns>The first row.</returns>
-	/// <exception cref="InvalidOperationException">The result set is empty.</exception>
 	public static Task<T> QueryFirstAsync<T>(this DbConnection connection, string command, IList<object?> parameters, QueryOptions? options = null, CancellationToken cancellationToken = default) where T: class, new() =>
 		QueryFirstAsync<T>(connection, command, (parameters ?? []).ToOrderedDictionary(), options, cancellationToken);
 
@@ -287,6 +285,18 @@ public static partial class ConnectionExtensions {
 	/// <typeparam name="T">The type of objects to return.</typeparam>
 	/// <param name="connection">The connection to the data source.</param>
 	/// <param name="command">The SQL query to be executed.</param>
+	/// <param name="options">The query options.</param>
+	/// <param name="cancellationToken">The token to cancel the operation.</param>
+	/// <returns>The single row.</returns>
+	public static Task<T> QuerySingleAsync<T>(this DbConnection connection, string command, QueryOptions? options = null, CancellationToken cancellationToken = default) where T: class, new() =>
+		QuerySingleAsync<T>(connection, command, new Dictionary<string, object?>(), options, cancellationToken);
+
+	/// <summary>
+	/// Executes a parameterized SQL query and returns the single row.
+	/// </summary>
+	/// <typeparam name="T">The type of objects to return.</typeparam>
+	/// <param name="connection">The connection to the data source.</param>
+	/// <param name="command">The SQL query to be executed.</param>
 	/// <param name="parameters">The named parameters of the SQL query.</param>
 	/// <param name="options">The query options.</param>
 	/// <param name="cancellationToken">The token to cancel the operation.</param>
@@ -315,7 +325,6 @@ public static partial class ConnectionExtensions {
 	/// <param name="options">The query options.</param>
 	/// <param name="cancellationToken">The token to cancel the operation.</param>
 	/// <returns>The single row.</returns>
-	/// <exception cref="InvalidOperationException">The result set is empty or contains more than one record.</exception>
 	public static Task<T> QuerySingleAsync<T>(this DbConnection connection, string command, IList<object?> parameters, QueryOptions? options = null, CancellationToken cancellationToken = default) where T: class, new() =>
 		QuerySingleAsync<T>(connection, command, (parameters ?? []).ToOrderedDictionary(), options, cancellationToken);
 

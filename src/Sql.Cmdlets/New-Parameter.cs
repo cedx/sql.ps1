@@ -14,12 +14,24 @@ public class NewParameterCommand: Cmdlet {
 	/// </summary>
 	[Parameter(Mandatory = true, Position = 0)]
 	public required IDbCommand Command { get; set; }
+	
+	/// <summary>
+	/// The parameter direction.
+	/// </summary>
+	[Parameter]
+	public ParameterDirection? Direction { get; set; }
 
 	/// <summary>
 	/// The parameter name.
 	/// </summary>
 	[Parameter(Mandatory = true, Position = 1)]
 	public required string Name { get; set; }
+
+	/// <summary>
+	/// The parameter type.
+	/// </summary>
+	[Parameter]
+	public DbType? Type { get; set; }
 
 	/// <summary>
 	/// The parameter value.
@@ -30,5 +42,6 @@ public class NewParameterCommand: Cmdlet {
 	/// <summary>
 	/// Performs execution of this command.
 	/// </summary>
-	protected override void ProcessRecord() => WriteObject(Command.CreateParameter(Name, Value));
+	protected override void ProcessRecord() =>
+		WriteObject(Command.CreateParameter(Name, Value, Type, Direction));
 }

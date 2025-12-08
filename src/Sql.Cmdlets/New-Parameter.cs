@@ -5,8 +5,7 @@ using System.Data;
 /// <summary>
 /// Creates a new parameter associated with the specified command.
 /// </summary>
-[Cmdlet(VerbsCommon.New, "Parameter")]
-[OutputType(typeof(IDbDataParameter))]
+[Cmdlet(VerbsCommon.New, "Parameter"), OutputType(typeof(IDbDataParameter))]
 public class NewParameterCommand: Cmdlet {
 
 	/// <summary>

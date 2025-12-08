@@ -3,8 +3,7 @@ namespace Belin.Sql.Cmdlets;
 /// <summary>
 /// Creates a new data mapper.
 /// </summary>
-[Cmdlet(VerbsCommon.New, "DataMapper")]
-[OutputType(typeof(DataMapper))]
+[Cmdlet(VerbsCommon.New, "DataMapper"), OutputType(typeof(DataMapper))]
 public class NewDataMapperCommand: Cmdlet {
 
 	/// <summary>

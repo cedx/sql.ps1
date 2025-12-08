@@ -6,8 +6,7 @@ using System.Data;
 /// <summary>
 /// Executes a parameterized SQL query that selects a single value.
 /// </summary>
-[Cmdlet(VerbsCommon.Get, "Scalar", DefaultParameterSetName = nameof(Parameters))]
-[OutputType(typeof(object))]
+[Cmdlet(VerbsCommon.Get, "Scalar", DefaultParameterSetName = nameof(Parameters)), OutputType(typeof(object))]
 public class GetScalarCommand: PSCmdlet {
 
 	/// <summary>

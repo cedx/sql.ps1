@@ -5,8 +5,7 @@ using System.Data;
 /// <summary>
 /// Creates a new database connection.
 /// </summary>
-[Cmdlet(VerbsCommon.New, "Connection")]
-[OutputType(typeof(IDbConnection))]
+[Cmdlet(VerbsCommon.New, "Connection"), OutputType(typeof(IDbConnection))]
 public class NewConnectionCommand: Cmdlet {
 
 	/// <summary>

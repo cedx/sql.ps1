@@ -6,8 +6,7 @@ using System.Text.RegularExpressions;
 /// <summary>
 /// Returns the version of the server associated with the specified connection.
 /// </summary>
-[Cmdlet(VerbsCommon.Get, "Version")]
-[OutputType(typeof(Version))]
+[Cmdlet(VerbsCommon.Get, "Version"), OutputType(typeof(Version))]
 public partial class GetVersionCommand: Cmdlet {
 
 	/// <summary>

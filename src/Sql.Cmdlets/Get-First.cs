@@ -7,8 +7,7 @@ using System.Dynamic;
 /// <summary>
 /// Executes a parameterized SQL query and returns the first row.
 /// </summary>
-[Cmdlet(VerbsCommon.Get, "First", DefaultParameterSetName = nameof(Parameters))]
-[OutputType(typeof(object))]
+[Cmdlet(VerbsCommon.Get, "First", DefaultParameterSetName = nameof(Parameters)), OutputType(typeof(object))]
 public class GetFirstCommand: PSCmdlet {
 
 	/// <summary>

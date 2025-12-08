@@ -6,8 +6,7 @@ using System.Data;
 /// <summary>
 /// Executes a parameterized SQL query and returns a data reader.
 /// </summary>
-[Cmdlet(VerbsLifecycle.Invoke, "Reader", DefaultParameterSetName = nameof(Parameters))]
-[OutputType(typeof(DataAdapter))]
+[Cmdlet(VerbsLifecycle.Invoke, "Reader", DefaultParameterSetName = nameof(Parameters)), OutputType(typeof(DataAdapter))]
 public class InvokeReaderCommand: PSCmdlet {
 
 	/// <summary>

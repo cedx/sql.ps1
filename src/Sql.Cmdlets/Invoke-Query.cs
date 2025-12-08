@@ -8,8 +8,7 @@ using System.Reflection;
 /// <summary>
 /// Executes a parameterized SQL query and returns an array of objects whose properties correspond to the columns.
 /// </summary>
-[Cmdlet(VerbsLifecycle.Invoke, "Query", DefaultParameterSetName = nameof(Parameters))]
-[OutputType(typeof(object[]))]
+[Cmdlet(VerbsLifecycle.Invoke, "Query", DefaultParameterSetName = nameof(Parameters)), OutputType(typeof(object[]))]
 public class InvokeQueryCommand: PSCmdlet {
 
 	/// <summary>

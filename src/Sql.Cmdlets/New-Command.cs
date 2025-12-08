@@ -6,8 +6,7 @@ using System.Data;
 /// <summary>
 /// Creates a new command associated with the specified connection.
 /// </summary>
-[Cmdlet(VerbsCommon.New, "Command", DefaultParameterSetName = nameof(Parameters))]
-[OutputType(typeof(IDbCommand))]
+[Cmdlet(VerbsCommon.New, "Command", DefaultParameterSetName = nameof(Parameters)), OutputType(typeof(IDbCommand))]
 public class NewCommandCommand: PSCmdlet {
 
 	/// <summary>

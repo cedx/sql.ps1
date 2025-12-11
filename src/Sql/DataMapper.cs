@@ -131,13 +131,6 @@ public sealed class DataMapper {
 
 		return propertyMaps[type] = propertyMap;
 	}
-	
-	/// <summary>
-	/// Returns a value indicating whether the specified property is nullable.
-	/// </summary>
-	/// <param name="propertyInfo">The property to inspect.</param>
-	/// <returns><see langword="true"/> if the specified property is nullable, otherwise <see langword="false"/>.</returns>
-	private static bool IsNullable(PropertyInfo propertyInfo) => GetNullability(propertyInfo).WriteState != NullabilityState.NotNull;
 
 	/// <summary>
 	/// Gets the nullability information for the specified property.
@@ -148,4 +141,11 @@ public sealed class DataMapper {
 		if (nullabilityMap.TryGetValue(propertyInfo, out var nullability)) return nullability;
 		return nullabilityMap[propertyInfo] = nullabilityContext.Create(propertyInfo);
 	}
+	
+	/// <summary>
+	/// Returns a value indicating whether the specified property is nullable.
+	/// </summary>
+	/// <param name="propertyInfo">The property to inspect.</param>
+	/// <returns><see langword="true"/> if the specified property is nullable, otherwise <see langword="false"/>.</returns>
+	private static bool IsNullable(PropertyInfo propertyInfo) => GetNullability(propertyInfo).WriteState != NullabilityState.NotNull;
 }

@@ -12,12 +12,7 @@ using System.Reflection;
 public sealed class DataMapper {
 
 	/// <summary>
-	/// The nullability context.
-	/// </summary>
-	private static readonly NullabilityInfoContext nullabilityContext = new();
-
-	/// <summary>
-	/// The nullability map, keyed by property.
+	/// The property nullability map.
 	/// </summary>
 	private static readonly Dictionary<PropertyInfo, NullabilityInfo> nullabilityMap = [];
 
@@ -139,9 +134,9 @@ public sealed class DataMapper {
 	/// <returns>The nullability information for the specified property.</returns>
 	private static NullabilityInfo GetNullability(PropertyInfo propertyInfo) {
 		if (nullabilityMap.TryGetValue(propertyInfo, out var nullability)) return nullability;
-		return nullabilityMap[propertyInfo] = nullabilityContext.Create(propertyInfo);
+		return nullabilityMap[propertyInfo] = new NullabilityInfoContext().Create(propertyInfo);
 	}
-	
+
 	/// <summary>
 	/// Returns a value indicating whether the specified property is nullable.
 	/// </summary>

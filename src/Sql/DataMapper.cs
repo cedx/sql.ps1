@@ -103,7 +103,7 @@ public sealed class DataMapper {
 		if (propertyMaps.TryGetValue(type, out var value)) return value;
 
 		var propertyInfos = type
-			.GetProperties(BindingFlags.Instance | BindingFlags.Public)
+			.GetProperties(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)
 			.Where(propertyInfo => !propertyInfo.IsDefined(typeof(NotMappedAttribute)) && (propertyInfo.IsDefined(typeof(ColumnAttribute)) || (propertyInfo.CanRead && propertyInfo.CanWrite)));
 
 		var propertyMap = new Dictionary<string, PropertyInfo>();

@@ -76,10 +76,11 @@ public sealed class DataMapper {
 
 			var value = properties[key];
 			propertyInfo.SetValue(instance, true switch {
+				true when value is null && underlyingType is not null => default,
 				true when value is null && targetType == typeof(string) => nullabilityContext.Create(propertyInfo).WriteState == NullabilityState.NotNull ? "" : default,
-				true when value is null && (underlyingType is not null || !propertyInfo.PropertyType.IsValueType) => default,
+				true when value is null && !propertyInfo.PropertyType.IsValueType => nullabilityContext.Create(propertyInfo).WriteState == NullabilityState.NotNull ? Activator.CreateInstance(targetType) : default,
 				true when targetType.IsEnum => Enum.ToObject(targetType, Convert.ChangeType(value ?? default!, Enum.GetUnderlyingType(targetType), CultureInfo.InvariantCulture)),
-				_ => Convert.ChangeType(value, targetType, CultureInfo.InvariantCulture)
+				_ => Convert.ChangeType(value ?? default, targetType, CultureInfo.InvariantCulture)
 			});
 		}
 

@@ -17,7 +17,7 @@ public sealed class DbParameter(string parameterName, object? parameterValue = d
 	/// <summary>
 	/// Value indicating whether this parameter is input-only, output-only, bidirectional, or a stored procedure return value parameter.
 	/// </summary>
-	public ParameterDirection Direction { get; set; } = ParameterDirection.Input;
+	public ParameterDirection? Direction { get; set; }
 
 	/// <summary>
 	/// The parameter name.

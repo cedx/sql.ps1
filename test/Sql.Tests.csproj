@@ -19,10 +19,12 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Microsoft.Data.SqlClient" Version="6.*" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.*" />
 		<PackageReference Include="MSTest" Version="4.*" />
 		<ProjectReference Include="../src/Sql/Sql.csproj" />
 		<ProjectReference Include="../src/Sql.Cmdlets/Sql.Cmdlets.csproj" />
+		<ProjectReference Include="../src/Sql.Dapper/Sql.Dapper.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

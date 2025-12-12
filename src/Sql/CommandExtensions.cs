@@ -17,12 +17,12 @@ public static class CommandExtensions {
 	/// <param name="dbType">The parameter type.</param>
 	/// <param name="direction">The parameter direction.</param>
 	/// <returns>The newly created parameter.</returns>
-	public static IDbDataParameter CreateParameter(this IDbCommand command, string name, object? value, DbType? dbType = null, ParameterDirection? direction = null) {
+	public static IDbDataParameter CreateParameter(this IDbCommand command, string name, object? value, DbType? dbType = null, ParameterDirection direction = ParameterDirection.Input) {
 		var parameter = command.CreateParameter();
+		parameter.Direction = direction;
 		parameter.ParameterName = name;
 		parameter.Value = value ?? DBNull.Value;
 		if (dbType is not null) parameter.DbType = dbType.Value;
-		if (direction is not null) parameter.Direction = direction.Value;
 		return parameter;
 	}
 }

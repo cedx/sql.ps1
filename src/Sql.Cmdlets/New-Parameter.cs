@@ -24,7 +24,7 @@ public class NewParameterCommand: Cmdlet {
 	/// The parameter direction.
 	/// </summary>
 	[Parameter]
-	public ParameterDirection? Direction { get; set; }
+	public ParameterDirection Direction { get; set; } = ParameterDirection.Input;
 
 	/// <summary>
 	/// The parameter name.

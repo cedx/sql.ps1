@@ -66,9 +66,9 @@ public class GetFirstCommand: PSCmdlet {
 			? PositionalParameters.ToOrderedDictionary()
 			: Parameters.Cast<DictionaryEntry>().ToDictionary(entry => entry.Key.ToString()!, entry => entry.Value);
 
-		var types = new[] { typeof(IDbConnection), typeof(string), typeof(IDictionary<string, object?>), typeof(QueryOptions) };
+		var types = new[] { typeof(IDbConnection), typeof(string), typeof(IDictionary<string, object?>), typeof(CommandOptions) };
 		var method = typeof(ConnectionExtensions).GetMethod(nameof(ConnectionExtensions.QueryFirst), types)!.MakeGenericMethod(As);
-		var record = method.Invoke(null, [Connection, Command, parameters, new QueryOptions(Timeout, Transaction, CommandType)])!;
+		var record = method.Invoke(null, [Connection, Command, parameters, new CommandOptions(Timeout, Transaction, CommandType)])!;
 		WriteObject(record);
 	}
 }

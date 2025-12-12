@@ -21,7 +21,7 @@ public static partial class ConnectionExtensions {
 	/// <param name="parameters">The named parameters of the SQL query.</param>
 	/// <param name="options">The query options.</param>
 	/// <returns>The newly created command.</returns>
-	public static IDbCommand CreateCommand(this IDbConnection connection, string sql, IDictionary<string, object?>? parameters = null, QueryOptions? options = null) {
+	public static IDbCommand CreateCommand(this IDbConnection connection, string sql, IDictionary<string, object?>? parameters = null, CommandOptions? options = null) {
 		var command = connection.CreateCommand();
 		command.CommandText = sql;
 		command.CommandTimeout = options?.Timeout ?? 30;

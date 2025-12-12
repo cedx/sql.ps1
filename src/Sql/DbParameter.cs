@@ -5,7 +5,9 @@ using System.Data;
 /// <summary>
 /// Represents a parameter of a parameterized SQL statement.
 /// </summary>
-public class DbParameter {
+/// <param name="parameterName">The parameter name.</param>
+/// <param name="parameterValue">The parameter value.</param>
+public sealed class DbParameter(string parameterName, object? parameterValue = default) {
 
 	/// <summary>
 	/// The database type of this parameter.
@@ -20,7 +22,7 @@ public class DbParameter {
 	/// <summary>
 	/// The parameter name.
 	/// </summary>
-	public required string ParameterName { get; set; }
+	public string ParameterName { get; set; } = parameterName;
 
 	/// <summary>
 	/// Indicates the precision of numeric parameters.
@@ -40,5 +42,5 @@ public class DbParameter {
 	/// <summary>
 	/// The parameter value.
 	/// </summary>
-	public object? Value { get; set; }
+	public object? Value { get; set; } = parameterValue;
 }

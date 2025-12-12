@@ -7,7 +7,7 @@ using System.Data;
 /// </summary>
 /// <param name="parameterName">The parameter name.</param>
 /// <param name="parameterValue">The parameter value.</param>
-public sealed class DataParameter(string parameterName, object? parameterValue = default) {
+public sealed class Parameter(string parameterName, object? parameterValue = default) {
 
 	/// <summary>
 	/// The database type of this parameter.

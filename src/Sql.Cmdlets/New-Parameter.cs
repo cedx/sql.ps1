@@ -5,7 +5,7 @@ using System.Data;
 /// <summary>
 /// Creates a new command parameter.
 /// </summary>
-[Cmdlet(VerbsCommon.New, "Parameter"), OutputType(typeof(DataParameter))]
+[Cmdlet(VerbsCommon.New, "Parameter"), OutputType(typeof(Parameter))]
 public class NewParameterCommand: Cmdlet {
 
 	/// <summary>
@@ -53,7 +53,7 @@ public class NewParameterCommand: Cmdlet {
 	/// <summary>
 	/// Performs execution of this command.
 	/// </summary>
-	protected override void ProcessRecord() => WriteObject(new DataParameter(Name, Value) {
+	protected override void ProcessRecord() => WriteObject(new Parameter(Name, Value) {
 		DbType = DbType,
 		Direction = Direction,
 		Precision = Precision,

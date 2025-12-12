@@ -30,7 +30,7 @@ public class GetScalarCommand: PSCmdlet {
 	/// The parameters of the SQL query.
 	/// </summary>
 	[Parameter(Position = 2)]
-	public DataParameterCollection Parameters { get; set; } = [];
+	public ParameterCollection Parameters { get; set; } = [];
 
 	/// <summary>
 	/// The wait time, in seconds, before terminating the attempt to execute the command and generating an error.

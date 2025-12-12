@@ -11,7 +11,7 @@ public static partial class ConnectionExtensions {
 	/// <summary>
 	/// The data mapper used to map data records to entity objects.
 	/// </summary>
-	private static readonly DataMapper dataMapper = new();
+	private static readonly Mapper dataMapper = new();
 
 	/// <summary>
 	/// Creates a new command associated with the specified connection.
@@ -21,7 +21,7 @@ public static partial class ConnectionExtensions {
 	/// <param name="parameters">The parameters of the SQL query.</param>
 	/// <param name="options">The command options.</param>
 	/// <returns>The newly created command.</returns>
-	public static IDbCommand CreateCommand(this IDbConnection connection, string sql, DataParameterCollection? parameters = null, CommandOptions? options = null) {
+	public static IDbCommand CreateCommand(this IDbConnection connection, string sql, ParameterCollection? parameters = null, CommandOptions? options = null) {
 		var dbCommand = connection.CreateCommand();
 		dbCommand.CommandText = sql;
 		dbCommand.CommandTimeout = options?.Timeout ?? 30;

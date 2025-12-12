@@ -1,6 +1,5 @@
 namespace Belin.Sql.Cmdlets;
 
-using System.Collections;
 using System.Data;
 
 /// <summary>
@@ -31,7 +30,7 @@ public class NewCommandCommand: PSCmdlet {
 	/// The parameters of the SQL query.
 	/// </summary>
 	[Parameter(Position = 2)]
-	public DbParameterCollection Parameters { get; set; } = [];
+	public DataParameterCollection Parameters { get; set; } = [];
 
 	/// <summary>
 	/// The wait time, in seconds, before terminating the attempt to execute the command and generating an error.

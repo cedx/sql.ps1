@@ -3,7 +3,7 @@ namespace Belin.Sql.Cmdlets;
 using System.Data;
 
 /// <summary>
-/// Creates a new database transaction.
+/// Creates a new transaction associated with the specified connection.
 /// </summary>
 [Cmdlet(VerbsCommon.New, "Transaction"), OutputType(typeof(IDbTransaction))]
 public class NewTransactionCommand: Cmdlet {

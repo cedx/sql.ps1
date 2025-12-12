@@ -107,7 +107,7 @@ public sealed class DataMapper {
 		if (value is not null) return true switch {
 			true when targetType.IsEnum && value.GetType() == typeof(string) => Enum.Parse(targetType, (string) value, ignoreCase: true),
 			true when targetType.IsEnum => Enum.ToObject(targetType, Convert.ChangeType(value, Enum.GetUnderlyingType(targetType), CultureInfo.InvariantCulture)),
-			_ => Convert.ChangeType(value, targetType, CultureInfo.InvariantCulture),
+			_ => targetType.IsInstanceOfType(value) ? value : Convert.ChangeType(value, targetType, CultureInfo.InvariantCulture),
 		};
 
 		return true switch {

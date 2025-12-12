@@ -122,7 +122,7 @@ public static partial class ConnectionExtensions {
 	/// <param name="command">The SQL query to be executed.</param>
 	/// <param name="options">The query options.</param>
 	/// <returns>The first column of the first row.</returns>
-	public static T? ExecuteScalar<T>(this IDbConnection connection, string command, QueryOptions? options = null) where T: IConvertible =>
+	public static T? ExecuteScalar<T>(this IDbConnection connection, string command, QueryOptions? options = null) =>
 		ExecuteScalar<T>(connection, command, new Dictionary<string, object?>(), options);
 
 	/// <summary>
@@ -134,8 +134,8 @@ public static partial class ConnectionExtensions {
 	/// <param name="parameters">The named parameters of the SQL query.</param>
 	/// <param name="options">The query options.</param>
 	/// <returns>The first column of the first row.</returns>
-	public static T? ExecuteScalar<T>(this IDbConnection connection, string command, IDictionary<string, object?> parameters, QueryOptions? options = null) where T: IConvertible =>
-		(T?) Convert.ChangeType(ExecuteScalar(connection, command, parameters, options), typeof(T), CultureInfo.InvariantCulture);
+	public static T? ExecuteScalar<T>(this IDbConnection connection, string command, IDictionary<string, object?> parameters, QueryOptions? options = null) =>
+		(T?) dataMapper.ChangeType(ExecuteScalar(connection, command, parameters, options), typeof(T));
 
 	/// <summary>
 	/// Executes a parameterized SQL query that selects a single value.
@@ -146,7 +146,7 @@ public static partial class ConnectionExtensions {
 	/// <param name="parameters">The positional parameters of the SQL query.</param>
 	/// <param name="options">The query options.</param>
 	/// <returns>The first column of the first row.</returns>
-	public static T? ExecuteScalar<T>(this IDbConnection connection, string command, IList<object?> parameters, QueryOptions? options = null) where T: IConvertible =>
+	public static T? ExecuteScalar<T>(this IDbConnection connection, string command, IList<object?> parameters, QueryOptions? options = null) =>
 		ExecuteScalar<T>(connection, command, parameters.ToOrderedDictionary(), options);
 
 	/// <summary>

@@ -5,6 +5,7 @@ using System.Data;
 using System.Dynamic;
 using System.Globalization;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
 /// <summary>
 /// Maps data records to entity objects.
@@ -20,6 +21,31 @@ public sealed class DataMapper {
 	/// The property maps, keyed by type.
 	/// </summary>
 	private static readonly Dictionary<Type, Dictionary<string, PropertyInfo>> propertyMaps = [];
+
+	/// <summary>
+	/// TODO Returns an object of the specified type and whose value is equivalent to the specified object.
+	/// </summary>
+	/// <param name="value">TODO An object that implements the IConvertible interface.</param>
+	/// <param name="conversionType">TODO The type of object to return.</param>
+	/// <param name="isNullableReferenceType">Value indicating whether the specified conversion type is a nullable reference type.</param>
+	/// <returns>TODO An object whose type is conversionType and whose value is equivalent to value.</returns>
+	public object? ChangeType(object? value, Type conversionType, bool isNullableReferenceType = true) {
+		var nullableType = Nullable.GetUnderlyingType(conversionType);
+		var targetType = nullableType ?? conversionType;
+
+		if (value is not null) return true switch {
+			true when targetType.IsEnum && value.GetType() == typeof(string) => Enum.Parse(targetType, (string) value, ignoreCase: true),
+			true when targetType.IsEnum => Enum.ToObject(targetType, Convert.ChangeType(value, Enum.GetUnderlyingType(targetType), CultureInfo.InvariantCulture)),
+			_ => Convert.ChangeType(value, targetType, CultureInfo.InvariantCulture),
+		};
+
+		return true switch {
+			true when nullableType is not null => default,
+			true when targetType.IsValueType => RuntimeHelpers.GetUninitializedObject(targetType),
+			true when targetType == typeof(string) => isNullableReferenceType ? default : "",
+			_ => isNullableReferenceType ? default : Activator.CreateInstance(targetType)
+		};
+	}
 
 	/// <summary>
 	/// Creates a new dyamic object from the specified data record.
@@ -66,22 +92,9 @@ public sealed class DataMapper {
 
 		var instance = Activator.CreateInstance<T>()!;
 		var propertyMap = GetPropertyMap<T>();
-
 		foreach (var key in properties.Keys.Where(propertyMap.ContainsKey)) {
 			var propertyInfo = propertyMap[key];
-			if (!propertyInfo.CanWrite) continue;
-
-			var nullableType = Nullable.GetUnderlyingType(propertyInfo.PropertyType);
-			var targetType = nullableType ?? propertyInfo.PropertyType;
-			var value = properties[key];
-
-			propertyInfo.SetValue(instance, true switch {
-				true when value is null && nullableType is not null => default,
-				true when value is null && targetType == typeof(string) => IsNullable(propertyInfo) ? default : "",
-				true when value is null && !targetType.IsValueType => IsNullable(propertyInfo) ? default : Activator.CreateInstance(targetType),
-				true when targetType.IsEnum => Enum.ToObject(targetType, Convert.ChangeType(value ?? default!, Enum.GetUnderlyingType(targetType), CultureInfo.InvariantCulture)),
-				_ => Convert.ChangeType(value ?? default, targetType, CultureInfo.InvariantCulture)
-			});
+			if (propertyInfo.CanWrite) propertyInfo.SetValue(instance, ChangeType(properties[key], propertyInfo.PropertyType, IsNullable(propertyInfo)));
 		}
 
 		return instance;

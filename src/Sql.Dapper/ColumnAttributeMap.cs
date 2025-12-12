@@ -7,7 +7,7 @@ using System.Reflection;
 /// Maps a column name to a property that may be annotated with a <see cref="ColumnAttribute"/> attribute.
 /// </summary>
 /// <typeparam name="T">The type of entity to which this type map applies.</typeparam>
-public class ColumnAttributeTypeMap<T>: SqlMapper.ITypeMap {
+public class ColumnAttributeMap<T>: SqlMapper.ITypeMap {
 
 	/// <summary>
 	/// The custom type map used to find the properties annotated with a <see cref="ColumnAttribute"/> attribute.

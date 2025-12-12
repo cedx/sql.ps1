@@ -39,7 +39,7 @@ public sealed class MapperTests {
 	[DataRow(-123.456, typeof(int?), false, -123)]
 	[DataRow("123", typeof(int), false, 123)]
 	[DataRow("-123", typeof(int), false, -123)]
-	
+
 	[DataRow(null, typeof(DayOfWeek), false, DayOfWeek.Sunday)]
 	[DataRow(null, typeof(DayOfWeek?), false, null)]
 	[DataRow(0, typeof(DayOfWeek), false, DayOfWeek.Sunday)]
@@ -51,5 +51,5 @@ public sealed class MapperTests {
 
 	[TestMethod]
 	public void ChangeType(object? value, Type conversionType, bool isNullableReferenceType, object? expected) =>
-		AreEqual(expected, new Mapper().ChangeType(value, conversionType, isNullableReferenceType)); 
+		AreEqual(expected, new Mapper().ChangeType(value, conversionType, isNullableReferenceType));
 }

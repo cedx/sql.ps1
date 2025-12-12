@@ -7,7 +7,7 @@ using System.Data;
 /// Collects all parameters relevant to a parameterized SQL statement.
 /// </summary>
 public class ParameterCollection: List<Parameter> {
-	
+
 	/// <summary>
 	/// Creates a new parameter list.
 	/// </summary>
@@ -18,13 +18,13 @@ public class ParameterCollection: List<Parameter> {
 	/// </summary>
 	/// <param name="collection">The collection whose elements are copied to the parameter list.</param>
 	public ParameterCollection(IEnumerable<Parameter> collection): base(collection) {}
-	
+
 	/// <summary>
 	/// Creates a new parameter list from the specified array of positional parameters.
 	/// </summary>
 	/// <param name="array">The array whose elements are copied to the parameter list.</param>
 	/// <returns>The parameter list corresponding to the specified array.</returns>
-	public static implicit operator ParameterCollection(object?[] array) => [.. array.Index().Select(entry => 
+	public static implicit operator ParameterCollection(object?[] array) => [.. array.Index().Select(entry =>
 		entry.Item is Parameter dbParameter ? dbParameter : new Parameter($"PositionalParameter{entry.Index}", entry.Item)
 	)];
 

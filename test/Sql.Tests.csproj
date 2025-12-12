@@ -3,7 +3,7 @@
 		<Company>Cedric-Belin.fr</Company>
 		<Copyright>© Cédric Belin</Copyright>
 		<Product>SQL Mapper for .NET</Product>
-		<Version>0.8.0</Version>
+		<Version>0.9.0</Version>
 	</PropertyGroup>
 
 	<PropertyGroup>

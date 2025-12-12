@@ -7,7 +7,7 @@ using System.Net;
 /// Maps an Internet Protocol (IP) address to or from a string.
 /// </summary>
 /// <param name="mapToIPv6">Value indicating whether to map IPv4 addresses to IPv6.</param>
-public class IPAddressTypeHandler(bool mapToIPv6 = false): SqlMapper.TypeHandler<IPAddress> {
+public class IPAddressHandler(bool mapToIPv6 = false): SqlMapper.TypeHandler<IPAddress> {
 
 	/// <summary>
 	/// Parses a database value back to a typed value.

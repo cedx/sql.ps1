@@ -7,7 +7,7 @@ using System.Dynamic;
 /// <summary>
 /// Executes a parameterized SQL query and returns an array of objects whose properties correspond to the columns.
 /// </summary>
-[Cmdlet(VerbsLifecycle.Invoke, "Query", DefaultParameterSetName = nameof(Parameters)), OutputType(typeof(object[]))]
+[Cmdlet(VerbsLifecycle.Invoke, "Query"), OutputType(typeof(object[]))]
 public class InvokeQueryCommand: PSCmdlet {
 
 	/// <summary>
@@ -35,16 +35,10 @@ public class InvokeQueryCommand: PSCmdlet {
 	public required IDbConnection Connection { get; set; }
 
 	/// <summary>
-	/// The named parameters of the SQL query.
+	/// The parameters of the SQL query.
 	/// </summary>
-	[Parameter(ParameterSetName = nameof(Parameters), Position = 2)]
-	public Hashtable Parameters { get; set; } = [];
-
-	/// <summary>
-	/// The positional parameters of the SQL query.
-	/// </summary>
-	[Parameter(ParameterSetName = nameof(PositionalParameters))]
-	public object[] PositionalParameters { get; set; } = [];
+	[Parameter(Position = 2)]
+	public DbParameterCollection Parameters { get; set; } = [];
 
 	/// <summary>
 	/// The wait time, in seconds, before terminating the attempt to execute the command and generating an error.
@@ -62,13 +56,8 @@ public class InvokeQueryCommand: PSCmdlet {
 	/// Performs execution of this command.
 	/// </summary>
 	protected override void ProcessRecord() {
-		IDictionary<string, object?> parameters = ParameterSetName == nameof(PositionalParameters)
-			? PositionalParameters.ToOrderedDictionary()
-			: Parameters.Cast<DictionaryEntry>().ToDictionary(entry => entry.Key.ToString()!, entry => entry.Value);
-
-		var types = new[] { typeof(IDbConnection), typeof(string), typeof(IDictionary<string, object?>), typeof(CommandOptions) };
-		var method = typeof(ConnectionExtensions).GetMethod(nameof(ConnectionExtensions.Query), types)!.MakeGenericMethod(As);
-		var records = (IEnumerable<object>) method.Invoke(null, [Connection, Command, parameters, new CommandOptions(Timeout, Transaction, CommandType)])!;
+		var method = typeof(ConnectionExtensions).GetMethod(nameof(ConnectionExtensions.Query))!.MakeGenericMethod(As);
+		var records = (IEnumerable<object>) method.Invoke(null, [Connection, Command, Parameters, new CommandOptions(Timeout, Transaction, CommandType)])!;
 		WriteObject(records.ToArray());
 	}
 }

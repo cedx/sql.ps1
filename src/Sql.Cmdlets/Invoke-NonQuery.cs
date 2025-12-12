@@ -6,7 +6,7 @@ using System.Data;
 /// <summary>
 /// Executes a parameterized SQL statement.
 /// </summary>
-[Cmdlet(VerbsLifecycle.Invoke, "NonQuery", DefaultParameterSetName = nameof(Parameters)), OutputType(typeof(int))]
+[Cmdlet(VerbsLifecycle.Invoke, "NonQuery"), OutputType(typeof(int))]
 public class InvokeNonQueryCommand: PSCmdlet {
 
 	/// <summary>
@@ -28,16 +28,10 @@ public class InvokeNonQueryCommand: PSCmdlet {
 	public required IDbConnection Connection { get; set; }
 
 	/// <summary>
-	/// The named parameters of the SQL query.
+	/// The parameters of the SQL query.
 	/// </summary>
-	[Parameter(ParameterSetName = nameof(Parameters), Position = 2)]
-	public Hashtable Parameters { get; set; } = [];
-
-	/// <summary>
-	/// The positional parameters of the SQL query.
-	/// </summary>
-	[Parameter(ParameterSetName = nameof(PositionalParameters))]
-	public object[] PositionalParameters { get; set; } = [];
+	[Parameter(Position = 2)]
+	public DbParameterCollection Parameters { get; set; } = [];
 
 	/// <summary>
 	/// The wait time, in seconds, before terminating the attempt to execute the command and generating an error.
@@ -54,11 +48,6 @@ public class InvokeNonQueryCommand: PSCmdlet {
 	/// <summary>
 	/// Performs execution of this command.
 	/// </summary>
-	protected override void ProcessRecord() {
-		IDictionary<string, object?> parameters = ParameterSetName == nameof(PositionalParameters)
-			? PositionalParameters.ToOrderedDictionary()
-			: Parameters.Cast<DictionaryEntry>().ToDictionary(entry => entry.Key.ToString()!, entry => entry.Value);
-
-		WriteObject(Connection.Execute(Command, parameters, new(Timeout, Transaction, CommandType)));
-	}
+	protected override void ProcessRecord() =>
+		WriteObject(Connection.Execute(Command, Parameters, new(Timeout, Transaction, CommandType)));
 }

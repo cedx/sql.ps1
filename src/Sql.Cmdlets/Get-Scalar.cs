@@ -6,7 +6,7 @@ using System.Data;
 /// <summary>
 /// Executes a parameterized SQL query that selects a single value.
 /// </summary>
-[Cmdlet(VerbsCommon.Get, "Scalar", DefaultParameterSetName = nameof(Parameters)), OutputType(typeof(object))]
+[Cmdlet(VerbsCommon.Get, "Scalar"), OutputType(typeof(object))]
 public class GetScalarCommand: PSCmdlet {
 
 	/// <summary>
@@ -28,16 +28,10 @@ public class GetScalarCommand: PSCmdlet {
 	public required IDbConnection Connection { get; set; }
 
 	/// <summary>
-	/// The named parameters of the SQL query.
+	/// The parameters of the SQL query.
 	/// </summary>
-	[Parameter(ParameterSetName = nameof(Parameters), Position = 2)]
-	public Hashtable Parameters { get; set; } = [];
-
-	/// <summary>
-	/// The positional parameters of the SQL query.
-	/// </summary>
-	[Parameter(ParameterSetName = nameof(PositionalParameters))]
-	public object[] PositionalParameters { get; set; } = [];
+	[Parameter(Position = 2)]
+	public DbParameterCollection Parameters { get; set; } = [];
 
 	/// <summary>
 	/// The wait time, in seconds, before terminating the attempt to execute the command and generating an error.
@@ -54,11 +48,6 @@ public class GetScalarCommand: PSCmdlet {
 	/// <summary>
 	/// Performs execution of this command.
 	/// </summary>
-	protected override void ProcessRecord() {
-		IDictionary<string, object?> parameters = ParameterSetName == nameof(PositionalParameters)
-			? PositionalParameters.ToOrderedDictionary()
-			: Parameters.Cast<DictionaryEntry>().ToDictionary(entry => entry.Key.ToString()!, entry => entry.Value);
-
-		WriteObject(Connection.ExecuteScalar(Command, parameters, new(Timeout, Transaction, CommandType)));
-	}
+	protected override void ProcessRecord() =>
+		WriteObject(Connection.ExecuteScalar(Command, Parameters, new(Timeout, Transaction, CommandType)));
 }

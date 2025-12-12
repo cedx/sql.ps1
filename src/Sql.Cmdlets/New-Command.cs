@@ -6,7 +6,7 @@ using System.Data;
 /// <summary>
 /// Creates a new command associated with the specified connection.
 /// </summary>
-[Cmdlet(VerbsCommon.New, "Command", DefaultParameterSetName = nameof(Parameters)), OutputType(typeof(IDbCommand))]
+[Cmdlet(VerbsCommon.New, "Command"), OutputType(typeof(IDbCommand))]
 public class NewCommandCommand: PSCmdlet {
 
 	/// <summary>
@@ -28,16 +28,10 @@ public class NewCommandCommand: PSCmdlet {
 	public required IDbConnection Connection { get; set; }
 
 	/// <summary>
-	/// The named parameters of the SQL query.
+	/// The parameters of the SQL query.
 	/// </summary>
-	[Parameter(ParameterSetName = nameof(Parameters), Position = 2)]
-	public Hashtable Parameters { get; set; } = [];
-
-	/// <summary>
-	/// The positional parameters of the SQL query.
-	/// </summary>
-	[Parameter(ParameterSetName = nameof(PositionalParameters))]
-	public object[] PositionalParameters { get; set; } = [];
+	[Parameter(Position = 2)]
+	public DbParameterCollection Parameters { get; set; } = [];
 
 	/// <summary>
 	/// The wait time, in seconds, before terminating the attempt to execute the command and generating an error.
@@ -54,11 +48,6 @@ public class NewCommandCommand: PSCmdlet {
 	/// <summary>
 	/// Performs execution of this command.
 	/// </summary>
-	protected override void ProcessRecord() {
-		IDictionary<string, object?> parameters = ParameterSetName == nameof(PositionalParameters)
-			? PositionalParameters.ToOrderedDictionary()
-			: Parameters.Cast<DictionaryEntry>().ToDictionary(entry => entry.Key.ToString()!, entry => entry.Value);
-
-		WriteObject(Connection.CreateCommand(Command, parameters, new(Timeout, Transaction, CommandType)));
-	}
+	protected override void ProcessRecord() =>
+		WriteObject(Connection.CreateCommand(Command, Parameters, new(Timeout, Transaction, CommandType)));
 }

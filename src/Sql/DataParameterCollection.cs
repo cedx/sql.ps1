@@ -2,7 +2,6 @@ namespace Belin.Sql;
 
 using System.Collections;
 using System.Data;
-using System.Linq;
 
 /// <summary>
 /// Collects all parameters relevant to a parameterized SQL statement.
@@ -26,7 +25,7 @@ public class DataParameterCollection: List<DataParameter> {
 	/// <param name="array">The array whose elements are copied to the parameter list.</param>
 	/// <returns>The parameter list corresponding to the specified array.</returns>
 	public static implicit operator DataParameterCollection(object?[] array) => [.. array.Index().Select(entry => 
-		entry.Item is DataParameter dbParameter ? dbParameter : new DataParameter($"Parameter{entry.Index}", entry.Item)
+		entry.Item is DataParameter dbParameter ? dbParameter : new DataParameter($"PositionalParameter{entry.Index}", entry.Item)
 	)];
 
 	/// <summary>

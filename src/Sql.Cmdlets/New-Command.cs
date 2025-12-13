@@ -6,7 +6,7 @@ using System.Data;
 /// Creates a new command associated with the specified connection.
 /// </summary>
 [Cmdlet(VerbsCommon.New, "Command"), OutputType(typeof(IDbCommand))]
-public class NewCommandCommand: PSCmdlet {
+public class NewCommandCommand: Cmdlet {
 
 	/// <summary>
 	/// The SQL query to be executed.

@@ -7,7 +7,7 @@ using System.Dynamic;
 /// Executes a parameterized SQL query and returns an array of objects whose properties correspond to the columns.
 /// </summary>
 [Cmdlet(VerbsLifecycle.Invoke, "Query"), OutputType(typeof(object[]))]
-public class InvokeQueryCommand: PSCmdlet {
+public class InvokeQueryCommand: Cmdlet {
 
 	/// <summary>
 	/// The type of objects to return.

@@ -6,7 +6,7 @@ using System.Data;
 /// Executes a parameterized SQL statement.
 /// </summary>
 [Cmdlet(VerbsLifecycle.Invoke, "NonQuery"), OutputType(typeof(int))]
-public class InvokeNonQueryCommand: PSCmdlet {
+public class InvokeNonQueryCommand: Cmdlet {
 
 	/// <summary>
 	/// The SQL query to be executed.

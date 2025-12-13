@@ -7,7 +7,7 @@ using System.Dynamic;
 /// Executes a parameterized SQL query and returns the single row.
 /// </summary>
 [Cmdlet(VerbsCommon.Get, "Single"), OutputType(typeof(object))]
-public class GetSingleCommand: PSCmdlet {
+public class GetSingleCommand: Cmdlet {
 
 	/// <summary>
 	/// The type of objects to return.

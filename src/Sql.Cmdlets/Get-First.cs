@@ -7,7 +7,7 @@ using System.Dynamic;
 /// Executes a parameterized SQL query and returns the first row.
 /// </summary>
 [Cmdlet(VerbsCommon.Get, "First"), OutputType(typeof(object))]
-public class GetFirstCommand: PSCmdlet {
+public class GetFirstCommand: Cmdlet {
 
 	/// <summary>
 	/// The type of objects to return.

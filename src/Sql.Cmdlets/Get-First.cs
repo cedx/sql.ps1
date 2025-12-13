@@ -55,8 +55,14 @@ public class GetFirstCommand: PSCmdlet {
 	/// Performs execution of this command.
 	/// </summary>
 	protected override void ProcessRecord() {
-		var method = typeof(ConnectionExtensions).GetMethod(nameof(ConnectionExtensions.QueryFirst))!.MakeGenericMethod(As);
-		var record = method.Invoke(null, [Connection, Command, Parameters, new CommandOptions(Timeout, Transaction, CommandType)])!;
-		WriteObject(record);
+		try {
+			var method = typeof(ConnectionExtensions).GetMethod(nameof(ConnectionExtensions.QueryFirst))!.MakeGenericMethod(As);
+			var record = method.Invoke(null, [Connection, Command, Parameters, new CommandOptions(Timeout, Transaction, CommandType)])!;
+			WriteObject(record);
+		}
+		catch (InvalidOperationException e) {
+			WriteError(new ErrorRecord(e, "EmptyResultSet", ErrorCategory.InvalidOperation, null));
+			WriteObject(null);
+		}
 	}
 }

@@ -55,8 +55,14 @@ public class GetSingleCommand: PSCmdlet {
 	/// Performs execution of this command.
 	/// </summary>
 	protected override void ProcessRecord() {
-		var method = typeof(ConnectionExtensions).GetMethod(nameof(ConnectionExtensions.QuerySingle))!.MakeGenericMethod(As);
-		var record = method.Invoke(null, [Connection, Command, Parameters, new CommandOptions(Timeout, Transaction, CommandType)])!;
-		WriteObject(record);
+		try {
+			var method = typeof(ConnectionExtensions).GetMethod(nameof(ConnectionExtensions.QuerySingle))!.MakeGenericMethod(As);
+			var record = method.Invoke(null, [Connection, Command, Parameters, new CommandOptions(Timeout, Transaction, CommandType)])!;
+			WriteObject(record);
+		}
+		catch (InvalidOperationException e) {
+			WriteError(new ErrorRecord(e, "EmptyResultSetOrMoreThanOneRecord", ErrorCategory.InvalidOperation, null));
+			WriteObject(null);
+		}
 	}
 }

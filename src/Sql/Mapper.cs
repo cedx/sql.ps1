@@ -30,7 +30,7 @@ public sealed class Mapper {
 	/// <param name="record">A data record providing the properties to be set on the created object.</param>
 	/// <returns>The newly created object.</returns>
 	public T CreateInstance<T>(IDataRecord record) where T: class, new() {
-		var properties = new OrderedDictionary<string, object?>();
+		var properties = new Dictionary<string, object?>();
 		for (var index = 0; index < record.FieldCount; index++) {
 			var value = record.GetValue(index);
 			properties.TryAdd(record.GetName(index), value is DBNull ? null : value);
@@ -61,9 +61,9 @@ public sealed class Mapper {
 
 		var instance = Activator.CreateInstance<T>()!;
 		var table = GetTableInfo<T>();
-		foreach (var key in properties.Keys.Where(table.Columns.ContainsKey)) {
-			var column = table.Columns[key];
-			if (column.CanWrite) column.SetValue(instance, ChangeType(properties[key], column.Type, column.IsNullable));
+		foreach (var name in properties.Keys.Where(table.Columns.ContainsKey)) {
+			var column = table.Columns[name];
+			if (column.CanWrite) column.SetValue(instance, ChangeType(properties[name], column.Type, column.IsNullable));
 		}
 
 		return instance;

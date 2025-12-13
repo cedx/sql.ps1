@@ -10,7 +10,7 @@ using System.Runtime.CompilerServices;
 /// Maps data records to entity objects.
 /// </summary>
 public sealed class Mapper {
-	
+
 	/// <summary>
 	/// The mapping between the entity types and their associated database tables.
 	/// </summary>

@@ -1,26 +1,20 @@
 namespace Belin.Sql;
 
-using System.ComponentModel.DataAnnotations.Schema;
+using Belin.Sql.Reflection;
 using System.Data;
 using System.Dynamic;
 using System.Globalization;
-using System.Reflection;
 using System.Runtime.CompilerServices;
 
 /// <summary>
 /// Maps data records to entity objects.
 /// </summary>
 public sealed class Mapper {
-
+	
 	/// <summary>
-	/// The property nullability map.
+	/// The mapping between the entity types and their associated database tables.
 	/// </summary>
-	private static readonly Dictionary<PropertyInfo, NullabilityInfo> nullabilityMap = [];
-
-	/// <summary>
-	/// The property maps, keyed by type.
-	/// </summary>
-	private static readonly Dictionary<Type, Dictionary<string, PropertyInfo>> propertyMaps = [];
+	private static readonly Dictionary<Type, TableInfo> mapping = [];
 
 	/// <summary>
 	/// Creates a new dyamic object from the specified data record.
@@ -66,10 +60,10 @@ public sealed class Mapper {
 		}
 
 		var instance = Activator.CreateInstance<T>()!;
-		var propertyMap = GetPropertyMap<T>();
-		foreach (var key in properties.Keys.Where(propertyMap.ContainsKey)) {
-			var propertyInfo = propertyMap[key];
-			if (propertyInfo.CanWrite) propertyInfo.SetValue(instance, ChangeType(properties[key], propertyInfo.PropertyType, IsNullable(propertyInfo)));
+		var table = GetTableInfo<T>();
+		foreach (var key in properties.Keys.Where(table.Columns.ContainsKey)) {
+			var column = table.Columns[key];
+			if (column.CanWrite) column.SetValue(instance, ChangeType(properties[key], column.Type, column.IsNullable));
 		}
 
 		return instance;
@@ -98,7 +92,7 @@ public sealed class Mapper {
 	/// </summary>
 	/// <param name="value">The object to convert.</param>
 	/// <param name="conversionType">The type of object to return.</param>
-	/// <param name="isNullable">Value indicating whether the specified conversion type is a nullable reference type.</param>
+	/// <param name="isNullable">Value indicating whether the specified conversion type is nullable.</param>
 	/// <returns>The value of the given type corresponding to the specified object.</returns>
 	internal object? ChangeType(object? value, Type conversionType, bool isNullable = true) {
 		var nullableType = Nullable.GetUnderlyingType(conversionType);
@@ -119,41 +113,12 @@ public sealed class Mapper {
 	}
 
 	/// <summary>
-	/// Retrives a dictionary of mapped properties of the specified type.
+	/// Gets the table information associated with the specified type.
 	/// </summary>
 	/// <typeparam name="T">The type to inspect.</typeparam>
-	/// <returns>The dictionary of mapped properties of the specified type.</returns>
-	private static Dictionary<string, PropertyInfo> GetPropertyMap<T>() where T: class, new() {
+	/// <returns>The table information associated with the specified type.</returns>
+	private static TableInfo GetTableInfo<T>() where T: class, new() {
 		var type = typeof(T);
-		if (propertyMaps.TryGetValue(type, out var value)) return value;
-
-		var propertyInfos = type
-			.GetProperties(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)
-			.Where(propertyInfo => !propertyInfo.IsDefined(typeof(NotMappedAttribute)) && (propertyInfo.IsDefined(typeof(ColumnAttribute)) || (propertyInfo.CanRead && propertyInfo.CanWrite)));
-
-		var propertyMap = new Dictionary<string, PropertyInfo>();
-		foreach (var propertyInfo in propertyInfos) {
-			var column = propertyInfo.GetCustomAttribute<ColumnAttribute>();
-			propertyMap[column?.Name ?? propertyInfo.Name] = propertyInfo;
-		}
-
-		return propertyMaps[type] = propertyMap;
+		return mapping.TryGetValue(type, out var value) ? value : mapping[type] = new TableInfo(type);
 	}
-
-	/// <summary>
-	/// Gets the nullability information for the specified property.
-	/// </summary>
-	/// <param name="propertyInfo">The property to inspect.</param>
-	/// <returns>The nullability information for the specified property.</returns>
-	private static NullabilityInfo GetNullability(PropertyInfo propertyInfo) {
-		if (nullabilityMap.TryGetValue(propertyInfo, out var nullability)) return nullability;
-		return nullabilityMap[propertyInfo] = new NullabilityInfoContext().Create(propertyInfo);
-	}
-
-	/// <summary>
-	/// Returns a value indicating whether the specified property is nullable.
-	/// </summary>
-	/// <param name="propertyInfo">The property to inspect.</param>
-	/// <returns><see langword="true"/> if the specified property is nullable, otherwise <see langword="false"/>.</returns>
-	private static bool IsNullable(PropertyInfo propertyInfo) => GetNullability(propertyInfo).WriteState != NullabilityState.NotNull;
 }

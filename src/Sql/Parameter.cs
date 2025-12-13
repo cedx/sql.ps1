@@ -43,4 +43,11 @@ public sealed class Parameter(string parameterName, object? parameterValue = def
 	/// The parameter value.
 	/// </summary>
 	public object? Value { get; set; } = parameterValue;
+
+	/// <summary>
+	/// Creates a new parameter from the specified name/value pair.
+	/// </summary>
+	/// <param name="parameter">The name/value pair providing the parameter name and value.</param>
+	/// <returns>The parameter corresponding to the specified name/value pair.</returns>
+	public static implicit operator Parameter((string Name, object? Value) parameter) => new(parameter.Name, parameter.Value);
 }

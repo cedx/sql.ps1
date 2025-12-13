@@ -45,26 +45,26 @@ public sealed class Parameter(string parameterName, object? parameterValue = def
 	public object? Value { get; set; } = parameterValue;
 
 	/// <summary>
-	/// Creates a new parameter from the specified name/value pair.
+	/// Creates a new parameter from the specified tuple.
 	/// </summary>
-	/// <param name="parameter">The name/value pair providing the parameter name and value.</param>
-	/// <returns>The parameter corresponding to the specified name/value pair.</returns>
+	/// <param name="parameter">The tuple providing the parameter properties.</param>
+	/// <returns>The parameter corresponding to the specified tuple.</returns>
 	public static implicit operator Parameter((string Name, object? Value) parameter) =>
 		new(parameter.Name, parameter.Value);
 
 	/// <summary>
-	/// Creates a new parameter from the specified name/value pair.
+	/// Creates a new parameter from the specified tuple.
 	/// </summary>
-	/// <param name="parameter">The name/value pair providing the parameter name and value.</param>
-	/// <returns>The parameter corresponding to the specified name/value pair.</returns>
+	/// <param name="parameter">The tuple providing the parameter properties.</param>
+	/// <returns>The parameter corresponding to the specified tuple.</returns>
 	public static implicit operator Parameter((string Name, object? Value, DbType DbType) parameter) =>
 		new(parameter.Name, parameter.Value) { DbType = parameter.DbType };
 
 	/// <summary>
-	/// Creates a new parameter from the specified name/value pair.
+	/// Creates a new parameter from the specified tuple.
 	/// </summary>
-	/// <param name="parameter">The name/value pair providing the parameter name and value.</param>
-	/// <returns>The parameter corresponding to the specified name/value pair.</returns>
+	/// <param name="parameter">The tuple providing the parameter properties.</param>
+	/// <returns>The parameter corresponding to the specified tuple.</returns>
 	public static implicit operator Parameter((string Name, object? Value, DbType DbType, int Size) parameter) =>
 		new(parameter.Name, parameter.Value) { DbType = parameter.DbType, Size = parameter.Size };
 }

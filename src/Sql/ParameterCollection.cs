@@ -25,7 +25,7 @@ public class ParameterCollection: List<Parameter> {
 	/// <param name="array">The array whose elements are copied to the parameter list.</param>
 	/// <returns>The parameter list corresponding to the specified array.</returns>
 	public static implicit operator ParameterCollection(object?[] array) => [.. array.Index().Select(entry =>
-		entry.Item is Parameter dbParameter ? dbParameter : new Parameter($"PositionalParameter{entry.Index}", entry.Item)
+		entry.Item is Parameter parameter ? parameter : new Parameter($"PositionalParameter{entry.Index}", entry.Item)
 	)];
 
 	/// <summary>
@@ -41,7 +41,7 @@ public class ParameterCollection: List<Parameter> {
 	/// <param name="dictionary">The dictionary whose elements are copied to the parameter list.</param>
 	/// <returns>The parameter list corresponding to the specified dictionary.</returns>
 	public static implicit operator ParameterCollection(Dictionary<string, object?> dictionary) => [.. dictionary.Select(entry =>
-		entry.Value is Parameter dbParameter ? dbParameter : new Parameter($"@{entry.Key}", entry.Value)
+		entry.Value is Parameter parameter ? parameter : new Parameter($"@{entry.Key}", entry.Value)
 	)];
 
 	/// <summary>

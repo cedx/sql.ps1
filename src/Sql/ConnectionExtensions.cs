@@ -11,7 +11,7 @@ public static partial class ConnectionExtensions {
 	/// <summary>
 	/// The data mapper used to map data records to entity objects.
 	/// </summary>
-	private static readonly Mapper dataMapper = new();
+	private static readonly Mapper mapper = new();
 
 	/// <summary>
 	/// Creates a new command associated with the specified connection.

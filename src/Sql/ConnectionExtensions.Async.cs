@@ -64,7 +64,7 @@ public static partial class ConnectionExtensions {
 	/// <param name="options">The command options.</param>
 	/// <returns>The first column of the first row.</returns>
 	public static async Task<T?> ExecuteScalarAsync<T>(this DbConnection connection, string command, ParameterCollection? parameters = null, CommandOptions? options = null) =>
-		(T?) dataMapper.ChangeType(await ExecuteScalarAsync(connection, command, parameters, options), typeof(T));
+		(T?) mapper.ChangeType(await ExecuteScalarAsync(connection, command, parameters, options), typeof(T));
 
 	/// <summary>
 	/// Executes a parameterized SQL query and returns a sequence of objects whose properties correspond to the columns.
@@ -77,7 +77,7 @@ public static partial class ConnectionExtensions {
 	/// <param name="cancellationToken">The token to cancel the operation.</param>
 	/// <returns>The sequence of objects whose properties correspond to the columns.</returns>
 	public static async Task<IEnumerable<T>> QueryAsync<T>(this DbConnection connection, string command, ParameterCollection? parameters = null, CommandOptions? options = null, CancellationToken cancellationToken = default) where T: class, new() =>
-		dataMapper.CreateInstances<T>(await ExecuteReaderAsync(connection, command, parameters, options, cancellationToken));
+		mapper.CreateInstances<T>(await ExecuteReaderAsync(connection, command, parameters, options, cancellationToken));
 
 	/// <summary>
 	/// Executes a parameterized SQL query and returns the first row.
@@ -92,7 +92,7 @@ public static partial class ConnectionExtensions {
 	/// <exception cref="InvalidOperationException">The result set is empty.</exception>
 	public static async Task<T> QueryFirstAsync<T>(this DbConnection connection, string command, ParameterCollection? parameters = null, CommandOptions? options = null, CancellationToken cancellationToken = default) where T: class, new() {
 		using var reader = await ExecuteReaderAsync(connection, command, parameters, options, cancellationToken);
-		return reader.Read() ? dataMapper.CreateInstance<T>(reader) : throw new InvalidOperationException("The result set is empty.");
+		return reader.Read() ? mapper.CreateInstance<T>(reader) : throw new InvalidOperationException("The result set is empty.");
 	}
 
 	/// <summary>
@@ -107,7 +107,7 @@ public static partial class ConnectionExtensions {
 	/// <returns>The first row, or <see langword="null"/> if not found.</returns>
 	public static async Task<T?> QueryFirstOrDefaultAsync<T>(this DbConnection connection, string command, ParameterCollection? parameters = null, CommandOptions? options = null, CancellationToken cancellationToken = default) where T: class, new() {
 		using var reader = await ExecuteReaderAsync(connection, command, parameters, options, cancellationToken);
-		return reader.Read() ? dataMapper.CreateInstance<T>(reader) : default;
+		return reader.Read() ? mapper.CreateInstance<T>(reader) : default;
 	}
 
 	/// <summary>
@@ -128,7 +128,7 @@ public static partial class ConnectionExtensions {
 		using var reader = await ExecuteReaderAsync(connection, command, parameters, options, cancellationToken);
 		while (reader.Read()) {
 			if (++rowCount > 1) break;
-			record = dataMapper.CreateInstance<T>(reader);
+			record = mapper.CreateInstance<T>(reader);
 		}
 
 		return rowCount == 1 ? record! : throw new InvalidOperationException("The result set is empty or contains more than one record.");
@@ -151,7 +151,7 @@ public static partial class ConnectionExtensions {
 		using var reader = await ExecuteReaderAsync(connection, command, parameters, options, cancellationToken);
 		while (reader.Read()) {
 			if (++rowCount > 1) break;
-			record = dataMapper.CreateInstance<T>(reader);
+			record = mapper.CreateInstance<T>(reader);
 		}
 
 		return rowCount == 1 ? record : default;

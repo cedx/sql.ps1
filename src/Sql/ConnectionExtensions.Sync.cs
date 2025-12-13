@@ -60,7 +60,7 @@ public static partial class ConnectionExtensions {
 	/// <param name="options">The command options.</param>
 	/// <returns>The first column of the first row.</returns>
 	public static T? ExecuteScalar<T>(this IDbConnection connection, string command, ParameterCollection? parameters = null, CommandOptions? options = null) =>
-		(T?) dataMapper.ChangeType(ExecuteScalar(connection, command, parameters, options), typeof(T));
+		(T?) mapper.ChangeType(ExecuteScalar(connection, command, parameters, options), typeof(T));
 
 	/// <summary>
 	/// Executes a parameterized SQL query and returns a sequence of objects whose properties correspond to the columns.
@@ -72,7 +72,7 @@ public static partial class ConnectionExtensions {
 	/// <param name="options">The command options.</param>
 	/// <returns>The sequence of objects whose properties correspond to the columns.</returns>
 	public static IEnumerable<T> Query<T>(this IDbConnection connection, string command, ParameterCollection? parameters = null, CommandOptions? options = null) where T: class, new() =>
-		dataMapper.CreateInstances<T>(ExecuteReader(connection, command, parameters, options));
+		mapper.CreateInstances<T>(ExecuteReader(connection, command, parameters, options));
 
 	/// <summary>
 	/// Executes a parameterized SQL query and returns the first row.
@@ -86,7 +86,7 @@ public static partial class ConnectionExtensions {
 	/// <exception cref="InvalidOperationException">The result set is empty.</exception>
 	public static T QueryFirst<T>(this IDbConnection connection, string command, ParameterCollection? parameters = null, CommandOptions? options = null) where T: class, new() {
 		using var reader = ExecuteReader(connection, command, parameters, options);
-		return reader.Read() ? dataMapper.CreateInstance<T>(reader) : throw new InvalidOperationException("The result set is empty.");
+		return reader.Read() ? mapper.CreateInstance<T>(reader) : throw new InvalidOperationException("The result set is empty.");
 	}
 
 	/// <summary>
@@ -100,7 +100,7 @@ public static partial class ConnectionExtensions {
 	/// <returns>The first row, or <see langword="null"/> if not found.</returns>
 	public static T? QueryFirstOrDefault<T>(this IDbConnection connection, string command, ParameterCollection? parameters = null, CommandOptions? options = null) where T: class, new() {
 		using var reader = ExecuteReader(connection, command, parameters, options);
-		return reader.Read() ? dataMapper.CreateInstance<T>(reader) : default;
+		return reader.Read() ? mapper.CreateInstance<T>(reader) : default;
 	}
 
 	/// <summary>
@@ -120,7 +120,7 @@ public static partial class ConnectionExtensions {
 		using var reader = ExecuteReader(connection, command, parameters, options);
 		while (reader.Read()) {
 			if (++rowCount > 1) break;
-			record = dataMapper.CreateInstance<T>(reader);
+			record = mapper.CreateInstance<T>(reader);
 		}
 
 		return rowCount == 1 ? record! : throw new InvalidOperationException("The result set is empty or contains more than one record.");
@@ -142,7 +142,7 @@ public static partial class ConnectionExtensions {
 		using var reader = ExecuteReader(connection, command, parameters, options);
 		while (reader.Read()) {
 			if (++rowCount > 1) break;
-			record = dataMapper.CreateInstance<T>(reader);
+			record = mapper.CreateInstance<T>(reader);
 		}
 
 		return rowCount == 1 ? record : default;

@@ -49,5 +49,14 @@ public sealed class Parameter(string parameterName, object? parameterValue = def
 	/// </summary>
 	/// <param name="parameter">The name/value pair providing the parameter name and value.</param>
 	/// <returns>The parameter corresponding to the specified name/value pair.</returns>
-	public static implicit operator Parameter((string Name, object? Value) parameter) => new(parameter.Name, parameter.Value);
+	public static implicit operator Parameter((string Name, object? Value) parameter) =>
+		new(parameter.Name, parameter.Value);
+
+	/// <summary>
+	/// Creates a new parameter from the specified name/value pair.
+	/// </summary>
+	/// <param name="parameter">The name/value pair providing the parameter name and value.</param>
+	/// <returns>The parameter corresponding to the specified name/value pair.</returns>
+	public static implicit operator Parameter((string Name, object? Value, DbType DbType) parameter) =>
+		new(parameter.Name, parameter.Value) { DbType = parameter.DbType };
 }

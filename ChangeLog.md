@@ -1,5 +1,9 @@
 # Changelog
 
+## Version [0.10.0](https://github.com/cedx/sql.net/compare/v0.9.0...v0.10.0)
+- Added the `TableInfo` and `ColumnInfo` classes.
+- The `Get-First` and `Get-Single` cmdlets now use a non-terminating error.
+
 ## Version [0.9.0](https://github.com/cedx/sql.net/compare/v0.8.0...v0.9.0)
 - Removed the `CommandExtensions` and `ListExtensions` classes.
 - Renamed the `DataMapper` class to `Mapper`.

@@ -1,5 +1,9 @@
 # Changelog
 
+## Version [0.13.0](https://github.com/cedx/sql.net/compare/v0.12.0...v0.13.0)
+- Added non-generic overloads to the methods of `ConnectionExtensions` class.
+- Fixed the `Invoke-Query` cmdlet.
+
 ## Version [0.12.0](https://github.com/cedx/sql.net/compare/v0.11.0...v0.12.0)
 - Added implicit conversions to the `Parameter` class.
 
